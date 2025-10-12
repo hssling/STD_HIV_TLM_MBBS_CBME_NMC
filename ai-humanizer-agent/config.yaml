@@ -1,0 +1,71 @@
+# AI Humanizer Agent Configuration
+
+# API Settings
+api:
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+
+# Humanization Settings
+humanization:
+  # Transformation intensity (0.1 to 1.0)
+  intensity: 0.7
+
+  # Enable different humanization techniques
+  techniques:
+    vocabulary_variation: true
+    sentence_structure: true
+    punctuation_variation: true
+    idiomatic_expressions: true
+    personal_touch: true
+    contextual_awareness: true
+
+  # Language model settings
+  model:
+    provider: "transformers"  # transformers, openai, anthropic
+    model_name: "gpt2"  # for local inference
+    temperature: 0.8
+    max_tokens: 150
+
+# Detection Settings
+detection:
+  # AI detection models to use
+  models:
+    - "grover"  # MIT's AI detection model
+    - "gltr"    # Linguistic feature analysis
+    - "pattern" # Pattern-based detection
+
+  # Detection thresholds
+  thresholds:
+    confidence_threshold: 0.8
+    min_text_length: 50
+    max_text_length: 5000
+
+# Processing Settings
+processing:
+  batch_size: 10
+  max_workers: 4
+  timeout: 30  # seconds
+
+  # Output settings
+  preserve_formatting: true
+  maintain_length: false  # if true, tries to keep similar length
+
+# Logging
+logging:
+  level: "INFO"
+  file: "logs/humanizer.log"
+  max_size: "10MB"
+  backup_count: 5
+
+# Security
+security:
+  max_requests_per_minute: 60
+  max_content_size: "1MB"
+  allowed_origins: ["*"]
+
+# Performance
+performance:
+  cache_enabled: true
+  cache_ttl: 3600  # seconds
+  cache_size: 1000
