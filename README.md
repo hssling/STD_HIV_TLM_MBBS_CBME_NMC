@@ -206,7 +206,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ### **Dr. Siddalingaiah H S**
 **Professor, Community Medicine**  
-**Shri Dharmasthala Manjunatheshwara Institute of Medical Sciences and Research Hospital (SIMSRH)**  
+**SIMSRH**  
 **Tumkur, Karnataka, India**  
 
 **Contact Information:**
@@ -239,3 +239,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 📞 Support
 
 For questions or support regarding the educational content, please refer to the teaching scripts and documentation within the project files.
+
