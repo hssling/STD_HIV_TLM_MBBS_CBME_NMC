@@ -1,0 +1,456 @@
+# HIV Teaching Presentation
+## Slide Structure for HIV Class
+
+### Title Slide
+**Human Immunodeficiency Virus (HIV)**
+**Comprehensive Management & ART**
+**MBBS 3rd Year Teaching Session**
+**Dr. [Faculty Name]**
+**Date: [Current Date]**
+
+---
+
+### Learning Objectives
+**By the end of this session, students will be able to:**
+
+1. Describe HIV virology, pathogenesis, and natural history
+2. Explain clinical staging and immunological classification
+3. Apply NACO guidelines for ART initiation and management
+4. Manage opportunistic infections and complications
+5. Implement prevention strategies including PrEP and PEP
+6. Address psychosocial aspects of HIV care
+
+---
+
+### HIV Virology & Structure
+**Virus Characteristics:**
+- Retrovirus (RNA virus)
+- Two main types: HIV-1 (global) and HIV-2 (West Africa)
+- Enveloped virus with glycoprotein spikes
+- Reverse transcriptase enzyme
+
+**Viral Structure:**
+- Core: RNA genome + reverse transcriptase
+- Envelope: gp120/gp41 surface proteins
+- Matrix protein layer
+- Capsid containing viral enzymes
+
+**Key Enzymes:**
+- Reverse transcriptase
+- Integrase
+- Protease
+
+---
+
+### Pathogenesis of HIV
+**Primary Infection:**
+- Virus enters CD4+ T cells via CD4 receptor + co-receptors (CCR5/CXCR4)
+- Viral replication in lymph nodes
+- Immune activation and CD4 depletion
+
+**Chronic Phase:**
+- Ongoing viral replication
+- Progressive CD4+ T cell loss
+- Immune dysfunction
+- Development of opportunistic infections
+
+**AIDS:**
+- CD4 count <200 cells/μL
+- Severe immunosuppression
+- Life-threatening opportunistic infections
+
+---
+
+### Natural History of HIV
+**Stages of HIV Infection:**
+
+1. **Acute HIV Infection (2-4 weeks)**
+   - Seroconversion illness
+   - High viral load, low CD4
+   - Highly infectious period
+
+2. **Clinical Latency (Asymptomatic)**
+   - Viral replication continues
+   - Gradual CD4 decline
+   - May last 8-10 years
+
+3. **Symptomatic HIV**
+   - Persistent generalized lymphadenopathy
+   - Constitutional symptoms
+   - Opportunistic infections
+
+4. **AIDS**
+   - CD4 <200 cells/μL
+   - AIDS-defining illnesses
+
+---
+
+### Clinical Staging (WHO)
+**Clinical Stage Determination:**
+
+**Stage 1:** Asymptomatic or persistent generalized lymphadenopathy
+**Stage 2:** Moderate unexplained weight loss (<10% body weight), minor mucocutaneous manifestations, herpes zoster, recurrent upper respiratory infections
+**Stage 3:** Severe weight loss (>10%), unexplained chronic diarrhea, prolonged fever, oral candidiasis, pulmonary TB, severe bacterial infections
+**Stage 4:** AIDS-defining conditions (PCP, toxoplasmosis, cryptococcal meningitis, etc.)
+
+**Immunological Classification:**
+- Not significant: >500 cells/μL
+- Mild: 350-499 cells/μL
+- Advanced: 200-349 cells/μL
+- Severe: <200 cells/μL
+
+---
+
+### Epidemiology in India
+**Key Statistics (NACO 2023):**
+- Adult HIV prevalence: 0.22%
+- People living with HIV: 23.1 lakh
+- New infections annually: ~50,000
+- AIDS-related deaths: ~15,000/year
+
+**Regional Distribution:**
+- Highest: Northeast states (Nagaland 1.5%, Manipur 1.4%)
+- South India: Andhra Pradesh, Karnataka, Telangana
+- Urban concentration: 60% of cases in urban areas
+
+**Transmission Routes:**
+- Heterosexual: 85%
+- Homosexual: 2%
+- Parenteral: 7% (IDU, blood transfusion)
+- Mother-to-child: 6%
+
+---
+
+### High-Risk Groups in India
+**Priority Populations:**
+
+1. **Men who have sex with men (MSM)**
+   - HIV prevalence: 17%
+   - Stigma and discrimination barriers
+   - Targeted intervention programs
+
+2. **Female sex workers (FSWs)**
+   - Prevalence: 2.8%
+   - Client condom use programs
+   - Community empowerment
+
+3. **Injecting drug users (IDUs)**
+   - Prevalence: 2.1%
+   - Needle exchange programs
+   - Methadone maintenance
+
+4. **Migrants and truckers**
+   - Mobile population
+   - High-risk behavior
+   - Cross-border transmission
+
+---
+
+### Diagnosis of HIV
+**Testing Algorithm (NACO):**
+
+**Step 1: Screening Test**
+- ELISA/ECLIA (Enzyme/Chemiluminescent immunoassay)
+- Rapid tests (fingerstick/oral fluid)
+
+**Step 2: Confirmatory Test**
+- Western blot OR
+- Immunofluorescence assay OR
+- Line immunoassay
+
+**Step 3: Tie-breaker (if discordant)**
+- HIV-1 RNA PCR or
+- HIV-1/HIV-2 differentiation immunoassay
+
+**Window Period:**
+- Antibody tests: 4-12 weeks
+- RNA PCR: 10-14 days
+- Combination tests: 2-4 weeks
+
+---
+
+### CD4 Count & Viral Load
+**CD4 Count Monitoring:**
+- Baseline assessment
+- Every 6 months on ART
+- Guides OI prophylaxis and ART changes
+- Prognostic indicator
+
+**Viral Load Testing:**
+- Baseline and 6 months after ART initiation
+- Every 12 months if suppressed
+- Detects treatment failure early
+- Target: <1,000 copies/mL
+
+**Interpretation:**
+- CD4 >500: Good prognosis
+- CD4 200-500: Increased OI risk
+- CD4 <200: AIDS, high mortality risk
+- Viral load <1,000: Good response
+
+---
+
+### ART Guidelines (NACO 2023)
+**When to Start ART:**
+- All PLHIV regardless of CD4 count
+- Immediate initiation recommended
+- No CD4 threshold for treatment
+
+**First-Line Regimens:**
+1. **TLE:** Tenofovir + Lamivudine + Efavirenz
+2. **TLD:** Tenofovir + Lamivudine + Dolutegravir
+3. **AZT-based:** Zidovudine + Lamivudine + Efavirenz
+
+**Second-Line Regimen:**
+- Tenofovir + Lamivudine + Atazanavir/ritonavir OR
+- Zidovudine + Lamivudine + Lopinavir/ritonavir
+
+**Third-Line:**
+- Darunavir-based regimens
+- Requires resistance testing
+
+---
+
+### ART Management
+**Adherence Requirements:**
+- >95% adherence for viral suppression
+- Fixed-dose combinations for simplicity
+- Once-daily regimens preferred
+
+**Monitoring Parameters:**
+- Clinical assessment monthly ×3, then every 3 months
+- CD4 count every 6 months
+- Viral load at 6 months, then annually
+- Liver/renal function tests
+
+**Side Effects Management:**
+- Efavirenz: CNS effects, teratogenic
+- Tenofovir: Renal toxicity, bone loss
+- Zidovudine: Anemia, neutropenia
+- Dolutegravir: Insomnia, headache
+
+---
+
+### Opportunistic Infections
+**Common OIs in India:**
+
+**Bacterial:**
+- Tuberculosis (most common OI)
+- Pneumococcal pneumonia
+- Salmonella infections
+
+**Viral:**
+- Herpes zoster
+- Cytomegalovirus
+- Progressive multifocal leukoencephalopathy
+
+**Fungal:**
+- Oral candidiasis
+- Cryptococcal meningitis
+- Pneumocystis pneumonia (rare in India)
+
+**Parasitic:**
+- Toxoplasmosis
+- Cryptosporidiosis
+
+---
+
+### OI Prophylaxis
+**Primary Prophylaxis:**
+
+**CD4 <200 cells/μL:**
+- Cotrimoxazole (Pneumocystis, Toxoplasma)
+- Azithromycin (MAC)
+
+**CD4 <50 cells/μL:**
+- Fluconazole (Cryptococcus)
+
+**Special Situations:**
+- INH prophylaxis for latent TB
+- Hepatitis B vaccination
+- HPV vaccination
+
+---
+
+### Prevention Strategies
+**Comprehensive Prevention Package:**
+
+1. **Treatment as Prevention**
+   - U=U (Undetectable = Untransmittable)
+   - Viral suppression prevents transmission
+
+2. **Pre-Exposure Prophylaxis (PrEP)**
+   - Tenofovir + Emtricitabine daily
+   - For high-risk individuals
+   - 99% effective when adherent
+
+3. **Post-Exposure Prophylaxis (PEP)**
+   - Within 72 hours of exposure
+   - 28-day regimen
+   - For occupational/non-occupational exposure
+
+4. **Condom Promotion**
+   - Consistent use prevents transmission
+   - NACO distributes 800 million condoms annually
+
+---
+
+### Mother-to-Child Transmission Prevention
+**PMTCT Program Components:**
+
+1. **Antenatal Care**
+   - HIV testing in first trimester
+   - CD4 count and viral load
+   - ART initiation regardless of CD4
+
+2. **Intrapartum Care**
+   - Zidovudine infusion during labor
+   - Avoid invasive procedures
+   - Elective cesarean if viral load >1,000
+
+3. **Postnatal Care**
+   - Infant ART prophylaxis (NVP syrup)
+   - Exclusive breastfeeding for 6 months
+   - Infant HIV testing at 6 weeks, 6 months, 18 months
+
+**Success Rate:** 95% transmission prevention with comprehensive care
+
+---
+
+### HIV in Special Populations
+**Pregnancy:**
+- All pregnant women tested for HIV
+- ART safe in pregnancy (except EFV in first trimester)
+- PMTCT protocols followed
+- Safe delivery practices
+
+**Children:**
+- Early infant diagnosis (EID)
+- Pediatric ART formulations
+- Nutritional support
+- Psychosocial care
+
+**Adolescents:**
+- Disclosure and assent
+- Adherence support
+- Mental health care
+- Transition to adult care
+
+---
+
+### Psychosocial Aspects
+**Stigma and Discrimination:**
+- Internalized stigma affects adherence
+- Family and community rejection
+- Workplace discrimination
+- Healthcare provider bias
+
+**Mental Health:**
+- Depression and anxiety common
+- Suicidal ideation risk
+- Substance use disorders
+- PTSD from diagnosis
+
+**Support Services:**
+- Counseling and psychotherapy
+- Support groups (PLHIV networks)
+- Legal aid services
+- Economic support programs
+
+---
+
+### ART Drug Resistance
+**Primary Resistance:**
+- Transmitted drug resistance
+- Testing before ART initiation
+
+**Acquired Resistance:**
+- Due to poor adherence
+- Inadequate regimens
+- Drug interactions
+
+**Management:**
+- Resistance testing (genotypic)
+- Switch to second-line regimens
+- Adherence counseling
+- Prevention through quality care
+
+---
+
+### Case Studies
+
+**Case 1: Newly Diagnosed HIV**
+- 30-year-old male, CD4 350, VL 50,000
+- ART initiation, adherence counseling
+- Partner testing and disclosure
+
+**Case 2: Treatment Failure**
+- Poor adherence, viral rebound
+- Resistance testing, regimen change
+- Adherence support interventions
+
+**Case 3: Advanced AIDS**
+- CD4 50, multiple OIs
+- OI management, ART optimization
+- Palliative care considerations
+
+---
+
+### Success Stories
+**India's HIV Response:**
+- 66% reduction in new infections (2007-2017)
+- 80% ART coverage achieved
+- 90% viral suppression rates
+- 23 lakh lives saved through ART
+
+**Global Impact:**
+- 38 million people on ART worldwide
+- 53% reduction in AIDS-related deaths since 2005
+- HIV no longer leading cause of death in many countries
+
+---
+
+### Future Directions
+**90-90-90 Targets (by 2020):**
+- 90% of PLHIV diagnosed
+- 90% of diagnosed on ART
+- 90% of on ART virally suppressed
+
+**95-95-95 Targets (by 2030):**
+- 95% diagnosed
+- 95% on ART
+- 95% virally suppressed
+
+**Research Areas:**
+- HIV cure research
+- Long-acting injectables
+- Therapeutic vaccines
+- Prevention technologies
+
+---
+
+### Key Takeaways
+
+1. HIV is a manageable chronic condition with ART
+2. Early diagnosis and treatment prevent complications
+3. Adherence is crucial for treatment success
+4. Prevention includes treatment, PrEP, and condoms
+5. Stigma remains a major barrier to care
+6. India's response shows what is possible with commitment
+
+---
+
+### References
+
+- NACO ART Guidelines (2023)
+- WHO HIV Guidelines (2021)
+- DHHS Adult and Adolescent ART Guidelines
+- Indian National AIDS Control Programme Reports
+
+---
+
+### Q&A Session
+**Questions and Discussion**
+
+*Thank you for your attention!*
+*HIV care saves lives and prevents transmission.*

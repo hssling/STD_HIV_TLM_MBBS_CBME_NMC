@@ -1,0 +1,17 @@
+# Core dependencies for STD/HIV educational content project
+
+# Presentation creation
+python-pptx>=0.6.21
+
+# Data visualization and charts
+matplotlib>=3.5.0
+seaborn>=0.11.0
+numpy>=1.21.0
+
+# Web dashboard
+streamlit>=1.28.0
+
+# Standard library dependencies (usually included with Python)
+# typing - included in Python 3.5+
+# random - included in Python
+# time - included in Python
