@@ -3,6 +3,14 @@
 STD Class MCQ Quiz Script
 Comprehensive Multiple Choice Questions for STD Teaching Session
 MBBS 3rd Year - Interactive Quiz Application
+
+Author: Dr. Siddalingaiah H S
+Professor, Community Medicine
+SIMSRH, Tumkur
+Email: hssling@yahoo.com
+Phone: +91 8941087719
+
+Educational content for medical students and healthcare professionals
 """
 
 import random

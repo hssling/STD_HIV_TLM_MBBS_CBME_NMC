@@ -1,3 +1,21 @@
+"""
+HIV/AIDS Presentation Generator with Images
+
+This script creates a comprehensive PowerPoint presentation on HIV/AIDS
+management in the Indian context, including clinical features, diagnosis,
+treatment, and prevention strategies.
+
+Author: Dr. Siddalingaiah H S
+Professor, Community Medicine
+SIMSRH, Tumkur
+
+Email: hssling@yahoo.com
+Phone: +91-8941087719
+
+Date: November 2024
+License: MIT License
+"""
+
 from pptx import Presentation
 from pptx.util import Inches
 

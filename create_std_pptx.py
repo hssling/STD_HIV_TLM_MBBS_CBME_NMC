@@ -1,3 +1,17 @@
+#!/usr/bin/env python3
+"""
+STD Presentation Generator
+Creates PowerPoint presentation for STD education
+
+Author: Dr. Siddalingaiah H S
+Professor, Community Medicine
+SIMSRH, Tumkur
+Email: hssling@yahoo.com
+Phone: +91 8941087719
+
+Generates educational presentations for medical students
+"""
+
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor

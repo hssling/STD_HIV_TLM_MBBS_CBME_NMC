@@ -204,8 +204,31 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Authors
 
-- **Content Creator**: AI Assistant specialized in medical education
-- **Technical Implementation**: Python-based content generation and web deployment
+### **Dr. Siddalingaiah H S**
+**Professor, Community Medicine**  
+**Shri Dharmasthala Manjunatheshwara Institute of Medical Sciences and Research Hospital (SIMSRH)**  
+**Tumkur, Karnataka, India**  
+
+**Contact Information:**
+- 📧 Email: hssling@yahoo.com
+- 📱 Phone: +91 8941087719
+
+**Academic Background:**
+- MBBS, MD (Community Medicine)
+- Extensive experience in medical education and public health
+- Special interest in STD/HIV prevention and control
+
+**Professional Contributions:**
+- Development of innovative teaching methodologies
+- Research in community-based health interventions
+- Training programs for healthcare professionals
+- Educational content creation for medical students
+
+### **Technical Implementation**
+- **Content Generation**: Python-based automated content creation
+- **Web Development**: Streamlit dashboard for interactive learning
+- **Documentation**: Comprehensive technical and deployment guides
+- **CI/CD Pipeline**: Automated testing and deployment workflows
 
 ## 🙏 Acknowledgments
 

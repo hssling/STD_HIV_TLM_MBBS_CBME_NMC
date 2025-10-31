@@ -1,5 +1,10 @@
-# HIV Class Visualizations
+M# HIV Class Visualizations
 ## Educational Graphics and Diagrams for HIV Teaching
+
+**Author:** Dr. Siddalingaiah H S, Professor, Community Medicine, SIMSRH, Tumkur
+**Email:** hssling@yahoo.com | **Phone:** +91-8941087719
+**Date:** November 2024
+**License:** MIT License
 
 ---
 

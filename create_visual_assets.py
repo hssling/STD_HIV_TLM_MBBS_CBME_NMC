@@ -1,3 +1,17 @@
+#!/usr/bin/env python3
+"""
+Visual Assets Generation Script
+Creates professional charts and diagrams for STD & HIV education
+
+Author: Dr. Siddalingaiah H S
+Professor, Community Medicine
+SIMSRH, Tumkur
+Email: hssling@yahoo.com
+Phone: +91 8941087719
+
+Generates visual assets for medical education materials
+"""
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np

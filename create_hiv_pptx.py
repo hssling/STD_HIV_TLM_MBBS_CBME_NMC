@@ -1,3 +1,17 @@
+#!/usr/bin/env python3
+"""
+HIV Presentation Generator
+Creates PowerPoint presentation for HIV education
+
+Author: Dr. Siddalingaiah H S
+Professor, Community Medicine
+SIMSRH, Tumkur
+Email: hssling@yahoo.com
+Phone: +91 8941087719
+
+Generates educational presentations for medical students
+"""
+
 from pptx import Presentation
 
 def create_hiv_presentation():

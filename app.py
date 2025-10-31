@@ -1,3 +1,17 @@
+#!/usr/bin/env python3
+"""
+STD & HIV Educational Dashboard
+Interactive web application for medical education content
+
+Author: Dr. Siddalingaiah H S
+Professor, Community Medicine
+SIMSRH, Tumkur
+Email: hssling@yahoo.com
+Phone: +91 8941087719
+
+Created for medical students and healthcare professionals
+"""
+
 import streamlit as st
 import os
 import subprocess

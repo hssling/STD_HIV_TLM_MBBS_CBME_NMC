@@ -1,5 +1,10 @@
 # Comprehensive TLM for MBBS 3rd Year - STD & HIV
 
+**Author:** Dr. Siddalingaiah H S, Professor, Community Medicine, SIMSRH, Tumkur
+**Email:** hssling@yahoo.com | **Phone:** +91-8941087719
+**Date:** November 2024
+**License:** MIT License
+
 ## Learning Objectives Overview
 By the end of this TLM, students will be able to:
 - Demonstrate comprehensive knowledge of STD epidemiology, clinical presentation, diagnosis, and management

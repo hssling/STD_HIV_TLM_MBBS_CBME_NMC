@@ -1,6 +1,11 @@
 # HIV One-Hour Class Presentation Script
 ## Structured for 45-50 Minute Lecture + 10-15 Minute Q&A
 
+**Author:** Dr. Siddalingaiah H S, Professor, Community Medicine, SIMSRH, Tumkur
+**Email:** hssling@yahoo.com | **Phone:** +91-8941087719
+**Date:** November 2024
+**License:** MIT License
+
 **Title:** HIV/AIDS: Comprehensive Management in Indian Context
 **Duration:** 60 minutes (45-50 min lecture + 10-15 min Q&A)
 **Target Audience:** MBBS 3rd Year Students

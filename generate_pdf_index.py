@@ -2,6 +2,14 @@
 """
 PDF Index Generator for STD & HIV Educational Content
 Converts the HTML index to a professional PDF document
+
+Author: Dr. Siddalingaiah H S
+Professor, Community Medicine
+SIMSRH, Tumkur
+Email: hssling@yahoo.com
+Phone: +91 8941087719
+
+Generates PDF documentation from HTML index
 """
 
 import os

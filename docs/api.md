@@ -1,5 +1,10 @@
 # API Documentation
 
+**Author:** Dr. Siddalingaiah H S, Professor, Community Medicine, SIMSRH, Tumkur
+**Email:** hssling@yahoo.com | **Phone:** +91-8941087719
+**Date:** November 2024
+**License:** MIT License
+
 This document describes the internal API and functions available in the STD & HIV Educational Dashboard.
 
 ## 🏗️ Application Structure
