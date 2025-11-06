@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jathin and Kethan Story Book 🌟</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Bubblegum+Sans&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Bubblegum Sans', cursive;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 25%, #fecfef 50%, #ffecd2 75%, #fcb69f 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .sparkles {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 2em;
+        }
+
+        .toc {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .toc h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .toc-item {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .toc-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .toc-item h3 {
+            font-family: 'Comic Neue', cursive;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .toc-item p {
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .story {
+            padding: 40px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .story:last-child {
+            border-bottom: none;
+        }
+
+        .story-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .story-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5em;
+            color: #ff6b6b;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+
+        .story-subtitle {
+            font-size: 1.1em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .story-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .illustration-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border: 3px solid #fff;
+        }
+
+        .illustration-title {
+            font-family: 'Fredoka One', cursive;
+            color: white;
+            text-align: center;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .illustration {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 3px solid #fff;
+        }
+
+        .story-text {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border: 3px solid #fff;
+            position: relative;
+        }
+
+        .story-text::before {
+            content: "📖";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            font-size: 2em;
+            background: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .story-text p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+        }
+
+        .story-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .moral {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            border: 2px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .moral strong {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.3em;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 25%, #fecfef 50%, #ffecd2 75%, #fcb69f 100%);
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+        .footer h3 {
+            font-family: 'Fredoka One', cursive;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        .emoji-decoration {
+            font-size: 1.5em;
+            margin: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .story-title {
+                font-size: 2em;
+            }
+
+            .toc-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .story-content {
+                padding: 20px;
+            }
+
+            .illustration-section, .story-text {
+                padding: 20px;
+            }
+        }
+
+        /* Scroll animations */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .bounce {
+            animation: bounce 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="sparkles">✨🌟⭐</div>
+            <h1>Jathin and Kethan Story Book 🌟</h1>
+            <p>10 Magical Adventures for Young Dreamers! ✨📚</p>
+        </div>
+
+        <div class="toc">
+            <h2>📖 Table of Contents 🎭</h2>
+            <div class="toc-grid">
+                <div class="toc-item">
+                    <h3>Story 1: The Hidden Treasure Adventure 🏴‍☠️</h3>
+                    <p>Jathin and Kethan discover a treasure map leading to family memories and the true meaning of treasure!</p>
+                </div>
+                <div class="toc-item">
+                    <h3>Story 2: The Friendly Dragon 🐉</h3>
+                    <p>The brothers befriend a lonely dragon and help him overcome his fear of flying!</p>
+                </div>
+                <div class="toc-item">
+                    <h3>Story 3: The Magical Forest 🌳</h3>
+                    <p>An enchanted forest where trees talk and animals dance, revealing nature's magic!</p>
+                </div>
+                <div class="toc-item">
+                    <h3>Story 4: The Superhero Siblings 🦸‍♂️</h3>
+                    <p>Magical capes give the brothers superpowers, teaching that kindness makes real heroes!</p>
+                </div>
+                <div class="toc-item">
+                    <h3>Story 5: The Time-Traveling Clock ⏰</h3>
+                    <p>A magical clock takes them through time, teaching about history and living in the present!</p>
+                </div>
+                <div class="toc-item">
+                    <h3>Story 6: The Underwater Kingdom 🐠</h3>
+                    <p>A magical shell lets them explore the ocean depths and learn about protecting marine life!</p>
+                </div>
+                <div class="toc-item">
+                    <h3>Story 7: The Cloud Castle ☁️</h3>
+                    <p>A rainbow ladder leads to a castle in the clouds, teaching about weather and imagination!</p>
+                </div>
+                <div class="toc-item">
+                    <h3>Story 8: The Animal Orchestra 🎵</h3>
+                    <p>Animals form a musical orchestra, teaching the joy of music and working together!</p>
+                </div>
+                <div class="toc-item">
+                    <h3>Story 9: The Wish-Granting Star ⭐</h3>
+                    <p>A shooting star grants wishes, but teaches that true magic comes from effort and kindness!</p>
+                </div>
+                <div class="toc-item">
+                    <h3>Story 10: The Garden of Dreams 🌸</h3>
+                    <p>A magical garden where dreams bloom like flowers, teaching how to grow your dreams!</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="story1" class="story">
+            <div class="story-header">
+                <h2 class="story-title">Story 1: The Hidden Treasure Adventure 🏴‍☠️</h2>
+                <p class="story-subtitle">A thrilling tale of discovery and family treasures!</p>
+            </div>
+            <div class="story-content">
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 1: The Discovery ✨</h3>
+                    <img src="images/story1_illustration1.png" alt="Jathin and Kethan finding the treasure map" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Once upon a time, in a cozy house at the edge of a sunny town, lived two brave brothers named Jathin and Kethan. Jathin was ten years old and loved solving puzzles, while Kethan was eight and always ready for an adventure.</p>
+                    <p>One rainy afternoon, while exploring their grandpa's old attic, they stumbled upon a dusty chest hidden behind some forgotten boxes. "Look what I found!" Jathin exclaimed, pulling out a yellowed parchment. It was a treasure map!</p>
+                    <p>The map showed their town with winding paths, a sparkling river, and a big red X at the top of Mystery Hill. "This must lead to buried treasure!" Kethan shouted, his eyes shining with excitement.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 2: Crossing the River 🌊</h3>
+                    <img src="images/story1_illustration2.png" alt="Brothers crossing the river" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Their parents gave them permission to explore, but warned them to be careful and return before sunset. Armed with a backpack of snacks, a compass, and the map, the brothers set off on their grand adventure.</p>
+                    <p>Their first challenge was crossing the Sparkling River. The water rushed swiftly, but they found large stepping stones that formed a natural bridge. Jathin went first, testing each stone to make sure it was steady. "It's safe!" he called back to Kethan. Kethan followed carefully, using a long stick for balance. As they crossed, they spotted rainbow-colored fish jumping in the water and dragonflies dancing in the air.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 3: The Riddle Stone 🪨</h3>
+                    <img src="images/story1_illustration3.png" alt="Brothers at the riddle stone" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Next, they climbed the gentle slope of Mystery Hill. At the halfway point, they found a large stone covered in moss. Carved into the stone were these words:</p>
+                    <p><em>"I speak without a mouth and hear without ears. I have no body, but I come alive with the wind. What am I?"</em></p>
+                    <p>Jathin read the riddle aloud. "What could it be?" he wondered. Kethan looked around the forest. "Maybe it's a tree? No, trees have bodies." Suddenly, Kethan pointed to the treetops. "Look! The leaves are rustling in the wind!" They realized the answer was "the wind." The stone slid aside, revealing a hidden path.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 4: The Treasure Chest 💎</h3>
+                    <img src="images/story1_illustration4.png" alt="Finding the family treasure" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Following the path to the top of Mystery Hill, they found the spot marked with the red X. They dug carefully and soon uncovered a small wooden chest. With trembling hands, they opened it. Inside wasn't piles of gold or jewels, but old photographs, letters, and small keepsakes from their family's past.</p>
+                    <p>"This is the real treasure," Jathin said softly, holding up a photo of their grandparents as children. "It's our family's memories."</p>
+                    <p>Kethan nodded, tears of joy in his eyes. "The best adventures aren't about finding gold, but discovering what really matters."</p>
+                    <p>As the sun set behind them, painting the sky in beautiful colors, the brothers carried their treasure home, knowing they had found something far more valuable than any buried gold.</p>
+                </div>
+
+                <div class="moral">
+                    <strong>Remember, little adventurers: The greatest treasures in life are the memories we make with the people we love! 💝</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stories 2-10 would follow the same pattern -->
+        <div class="story">
+            <div class="story-header">
+                <h2 class="story-title">Story 2: The Friendly Dragon 🐉</h2>
+                <p class="story-subtitle">A tale of friendship and overcoming fears!</p>
+            </div>
+            <div class="story-content">
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 1: The Mysterious Cave 🕳️</h3>
+                    <img src="images/story2_illustration1.png" alt="Brothers finding the cave" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Once upon a time, Jathin and Kethan decided to explore the Whispering Woods behind their house. These woods were said to be magical, filled with secrets and wonders. Jathin, being the older brother, carried a flashlight, while Kethan clutched his favorite stuffed bear for courage.</p>
+                    <p>As they wandered deeper into the woods, they heard strange noises - not scary ones, but sad-sounding sighs and gentle rumbles. "What could that be?" Kethan whispered. Following the sounds, they came upon a huge cave hidden behind a waterfall of vines.</p>
+                    <p>Peeking inside, they saw something amazing: a dragon! But this wasn't a fierce, fire-breathing dragon from storybooks. This dragon was green and scaly, with kind eyes and droopy wings. He looked lonely and a little sad.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 2: Meeting the Dragon 🤝</h3>
+                    <img src="images/story2_illustration2.png" alt="Brothers meeting Ember" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>"Hello," Jathin said bravely. "We're Jathin and Kethan. What's your name?"</p>
+                    <p>The dragon blinked his large eyes. "I am Ember," he replied in a deep but gentle voice. "I've been alone for a very long time. Dragons like me are supposed to fly and breathe fire, but... I can't fly. My wings are too heavy, and I'm afraid of heights."</p>
+                    <p>Kethan stepped forward, his fear forgotten. "That's okay! We can be your friends. Maybe we can help you learn to fly!"</p>
+                    <p>Ember's eyes lit up. "Really? You would do that for me?"</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 3: Playing Games 🎮</h3>
+                    <img src="images/story2_illustration3.png" alt="Playing with Ember" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>For the next few days, Jathin and Kethan visited Ember every afternoon. They brought him fruits from their garden and told him stories about their adventures. Ember shared tales of ancient times when dragons roamed freely.</p>
+                    <p>One day, they decided to help Ember overcome his fear. "Flying isn't just about wings," Jathin explained. "It's about believing you can do it." They started small - teaching Ember to jump over small rocks, then bigger ones.</p>
+                    <p>They played games in the cave: tag, where Ember used his long tail to gently tag them; hide and seek, where Ember counted to one hundred (dragons count very slowly); and storytelling, where each shared their dreams.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 4: The First Flight 🛫</h3>
+                    <img src="images/story2_illustration4.png" alt="Ember's first flight" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Finally, the big day came. They led Ember to a gentle hill overlooking the valley. "You can do this," Kethan encouraged. "We're right here with you."</p>
+                    <p>Ember took a deep breath, spread his wings, and jumped. For a moment, nothing happened. Then, with a mighty flap, he caught the wind! He didn't soar high like other dragons, but he flew - gliding just above the ground, circling the hill.</p>
+                    <p>Jathin and Kethan cheered and clapped. "You did it! You're flying!"</p>
+                    <p>Ember landed gently, his eyes sparkling with joy. "Thank you, my friends. You taught me that friendship gives you wings stronger than any dragon could have alone."</p>
+                    <p>From that day on, Ember became the guardian of the Whispering Woods, and Jathin and Kethan had a dragon friend who would always be there for them.</p>
+                </div>
+
+                <div class="moral">
+                    <strong>Remember, children: True friends help each other overcome fears and reach new heights! 🌟</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 3: The Magical Forest -->
+        <div id="story3" class="story">
+            <div class="story-header">
+                <h2 class="story-title">Story 3: The Magical Forest 🌳</h2>
+                <p class="story-subtitle">An enchanted forest where trees talk and animals dance!</p>
+            </div>
+            <div class="story-content">
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 1: The Secret Entrance 🌲</h3>
+                    <img src="images/story3_illustration1.png" alt="Brothers finding the magical forest entrance" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Once upon a time, Jathin and Kethan discovered a secret path in their backyard that led to a magical forest. This wasn't an ordinary forest - it was alive with wonder and filled with talking trees, singing flowers, and dancing animals.</p>
+                    <p>The brothers had been playing in the garden when Kethan noticed a narrow opening between two old oak trees. "Look, Jathin! There's a path we never saw before!" As they stepped through, the trees seemed to whisper greetings.</p>
+                    <p>"Welcome, young explorers," said a tall oak tree with a wise face in its bark. "You have entered the Enchanted Grove, where nature comes alive."</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 2: Meeting the Animals 🐿️</h3>
+                    <img src="images/story3_illustration2.png" alt="Brothers meeting forest animals" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>As they walked deeper, they met all sorts of friendly creatures. A wise old owl named Oliver greeted them from his branch. "Hello, children! What brings you to our magical home?"</p>
+                    <p>"We're exploring," Jathin replied. "This place is amazing!"</p>
+                    <p>Oliver introduced them to his friends: Benny the Bunny, who could hop incredibly high; Squeaky the Squirrel, who collected the shiniest acorns; and Daisy the Deer, who was as graceful as a dancer.</p>
+                    <p>The animals showed the boys around. They visited a meadow where flowers sang sweet songs, and a pond where fish performed acrobatic jumps.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 3: The Tree Council 🌿</h3>
+                    <img src="images/story3_illustration3.png" alt="Brothers at the tree council" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>The brothers were invited to the Great Tree Council, where the oldest trees shared their wisdom. "We trees have stood here for hundreds of years," said Grandmother Willow, the eldest oak. "We have seen many changes in the world."</p>
+                    <p>"We protect the forest and teach lessons to those who listen," added another tree.</p>
+                    <p>The animals joined in, sharing their stories. Benny told how he learned to share his carrots with friends, and Squeaky explained how storing food for winter taught patience.</p>
+                    <p>Jathin and Kethan listened carefully, learning that every creature in the forest had a role to play.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 4: The Forest Song 🎶</h3>
+                    <img src="images/story3_illustration4.png" alt="Forest creatures singing together" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>As evening fell, the forest came alive with music. All the creatures joined in a grand song - trees rustled their leaves, flowers hummed melodies, and animals danced in circles.</p>
+                    <p>Jathin and Kethan joined the song, their voices blending with the forest's magic. They learned the Forest Song, which celebrated friendship, nature, and the beauty of working together.</p>
+                    <p>When it was time to go home, Grandmother Willow gave them each a small acorn. "Plant these in your garden," she said. "They will remind you of the magic within nature."</p>
+                    <p>Back home, the brothers planted the acorns and watched as tiny sprouts appeared. They knew that magic wasn't just in faraway forests - it was everywhere, if you knew how to look.</p>
+                </div>
+
+                <div class="moral">
+                    <strong>Remember, little ones: Nature is full of wonders. Listen to the trees, watch the animals, and you'll discover magic in the world around you! 🌸</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 4: The Superhero Siblings -->
+        <div id="story4" class="story">
+            <div class="story-header">
+                <h2 class="story-title">Story 4: The Superhero Siblings 🦸‍♂️</h2>
+                <p class="story-subtitle">Magical capes give the brothers superpowers!</p>
+            </div>
+            <div class="story-content">
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 1: The Magical Wardrobe 👕</h3>
+                    <img src="images/story4_illustration1.png" alt="Brothers finding magical capes" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Once upon a time, Jathin and Kethan were playing in their bedroom when they discovered something extraordinary. While tidying up their toys, Kethan opened their old wooden wardrobe that had been in the family for generations.</p>
+                    <p>"Whoa! Look at this!" Kethan exclaimed. Instead of their usual clothes, the wardrobe was filled with two magnificent capes. One was bright red with a lightning bolt symbol, and the other was deep blue with a star emblem. The capes glowed softly, as if they were alive.</p>
+                    <p>Jathin touched the red cape. Instantly, he felt stronger and braver. Kethan tried the blue one and felt faster and smarter. "We're superheroes!" they shouted together.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 2: Superhero Training 💪</h3>
+                    <img src="images/story4_illustration2.png" alt="Brothers practicing superpowers" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>The capes gave them special abilities. Jathin's red cape made him incredibly strong and able to jump very high. Kethan's blue cape made him super fast and able to solve problems quickly.</p>
+                    <p>They spent the afternoon practicing their powers in the backyard. Jathin lifted heavy rocks and jumped over the fence. Kethan ran around the house three times in seconds and figured out how to fix their broken swing.</p>
+                    <p>Their little dog, Spot, watched with wagging tail, barking excitedly.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 3: Saving the Day 🛡️</h3>
+                    <img src="images/story4_illustration3.png" alt="Brothers helping elderly lady" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Just then, they heard cries for help from the town square. An elderly neighbor, Mrs. Jenkins, was struggling with her heavy grocery bags. One bag tore, and groceries started rolling everywhere.</p>
+                    <p>"Super Siblings to the rescue!" Jathin shouted. With his super strength, he caught flying apples and oranges in mid-air. Kethan, using his super speed, gathered the rolling items before they went too far.</p>
+                    <p>Mrs. Jenkins was amazed. "Thank you, young heroes! How did you do that?"</p>
+                    <p>"We're just helping out," Kethan said with a wink.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 4: The Big Rescue 🦸‍♀️</h3>
+                    <img src="images/story4_illustration4.png" alt="Brothers rescuing girl from tree" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Their biggest challenge came when they heard a child's cries from the park. Little Sarah had climbed too high in an old oak tree and was too scared to come down.</p>
+                    <p>"Don't worry, Sarah!" Jathin called. Using his super strength, he climbed the tree quickly and safely brought her down. Kethan comforted her with kind words and made sure she was okay.</p>
+                    <p>Sarah's parents were so grateful. "You saved our daughter! You're real heroes!"</p>
+                    <p>As the sun set, the brothers returned home, tired but happy. They hung up their capes in the wardrobe, knowing they could use them again whenever someone needed help.</p>
+                </div>
+
+                <div class="moral">
+                    <strong>Remember, brave ones: You don't need capes to be a superhero. Being kind, helpful, and brave makes you a hero every day! ⭐</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 5: The Time-Traveling Clock -->
+        <div id="story5" class="story">
+            <div class="story-header">
+                <h2 class="story-title">Story 5: The Time-Traveling Clock ⏰</h2>
+                <p class="story-subtitle">A magical clock takes them through time!</p>
+            </div>
+            <div class="story-content">
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 1: The Mysterious Clock 🕰️</h3>
+                    <img src="images/story5_illustration1.png" alt="Brothers finding the time-traveling clock" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Once upon a time, while cleaning out their grandpa's old attic, Jathin and Kethan found a peculiar clock. It wasn't an ordinary timepiece - this clock was made of shimmering crystal with golden gears that seemed to move on their own.</p>
+                    <p>"Look at this!" Jathin said, carefully picking it up. The clock had twelve numbers, but instead of 1-12, they were strange symbols. The hands glowed softly, and when they touched it, they felt a tingling sensation.</p>
+                    <p>Suddenly, the clock chimed, and a gentle voice spoke: "Time travelers, state your destination."</p>
+                    <p>The boys looked at each other in amazement. "Can we really travel through time?" Kethan asked.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 2: The Dinosaur Era 🦕</h3>
+                    <img src="images/story5_illustration2.png" alt="Brothers with dinosaurs" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Curious, they said, "Take us to see dinosaurs!" In a swirl of colors and sounds, they were transported to a time long ago, when dinosaurs ruled the Earth.</p>
+                    <p>They found themselves in a lush valley with giant ferns and distant volcanoes. A friendly stegosaurus with plates on its back was eating leaves nearby. "Hello!" Kethan whispered. The dinosaur looked at them curiously but didn't seem afraid.</p>
+                    <p>They learned that not all dinosaurs were scary - many were gentle giants who just wanted to eat and play.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 3: The Future City 🚀</h3>
+                    <img src="images/story5_illustration3.png" alt="Brothers in futuristic city" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Next, they asked to see the future. Whoosh! They arrived in an amazing city where buildings touched the clouds and cars flew through the air like birds.</p>
+                    <p>People wore clothes that changed colors, and friendly robots helped with everyday tasks. "This is incredible!" Jathin exclaimed. They saw floating gardens where fruits grew without soil, and schools where children learned by playing games.</p>
+                    <p>A kind robot guide explained how people in the future cared for the environment and worked together to solve problems.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 4: Back to the Present 🏠</h3>
+                    <img src="images/story5_illustration4.png" alt="Brothers back home with lessons learned" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>When they returned home, the clock taught them an important lesson: "Time is precious. Learn from the past, live in the present, and dream of the future."</p>
+                    <p>Jathin and Kethan promised to make every moment count. They started a "Time Treasure" journal where they wrote down special moments and things they were grateful for.</p>
+                    <p>The clock became their special friend, reminding them that adventure and learning could happen anytime, anywhere.</p>
+                </div>
+
+                <div class="moral">
+                    <strong>Remember, young time travelers: Every moment is a treasure. Make the most of your time by learning, loving, and living fully! ⏳</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 6: The Underwater Kingdom -->
+        <div id="story6" class="story">
+            <div class="story-header">
+                <h2 class="story-title">Story 6: The Underwater Kingdom 🐠</h2>
+                <p class="story-subtitle">A magical shell lets them explore the ocean depths!</p>
+            </div>
+            <div class="story-content">
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 1: The Magical Shell 🐚</h3>
+                    <img src="images/story6_illustration1.png" alt="Brothers finding the magical shell" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>One sunny afternoon, Jathin and Kethan went to the beach to play. While building the biggest sandcastle ever, Kethan dug up something extraordinary - a beautiful seashell that glowed with all the colors of the rainbow.</p>
+                    <p>"Look what I found!" Kethan shouted. As Jathin examined it, they noticed a perfect pearl inside that seemed to pulse with light.</p>
+                    <p>When they held the shell to their ears, instead of the usual ocean sounds, they heard a clear voice: "Brave explorers of the sea, hold the pearl and make a wish to visit the deep."</p>
+                    <p>Excited, they wished together: "We wish to explore the underwater world!"</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 2: Diving into the Ocean 🌊</h3>
+                    <img src="images/story6_illustration2.png" alt="Brothers transforming and diving" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Suddenly, they felt a tingling sensation. Their legs became fins, gills appeared on their necks, and they could breathe underwater! Holding hands, they dove into the sparkling ocean.</p>
+                    <p>The underwater world was more beautiful than they imagined. Colorful fish swam in schools, coral reefs looked like underwater gardens, and sunlight danced through the water in golden beams.</p>
+                    <p>A friendly dolphin named Finley greeted them. "Welcome to the Sea Kingdom! I'm Finley, your guide."</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 3: Meeting the Sea Creatures 🐟</h3>
+                    <img src="images/story6_illustration3.png" alt="Brothers meeting mermaid and sea creatures" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Finley led them to the Coral Palace, home of Princess Marina, a beautiful mermaid with flowing blue hair and a crown of seashells.</p>
+                    <p>"Welcome, surface dwellers," Princess Marina said warmly. "What brings you to our watery home?"</p>
+                    <p>"We're explorers!" Jathin replied. "We want to learn about the ocean."</p>
+                    <p>The princess introduced them to her friends: Ollie the Octopus, who could change colors; Shelly the Turtle, who was very wise; and Sammy the Seahorse, who could swim backwards.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 4: The Ocean Adventure 🏊‍♂️</h3>
+                    <img src="images/story6_illustration4.png" alt="Brothers exploring sunken shipwreck" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>The princess took them on a grand tour. They explored a sunken pirate ship filled with treasures, swam through underwater caves glowing with bioluminescent algae, and played hide-and-seek with schools of fish.</p>
+                    <p>They learned important lessons: how to protect the ocean from pollution, why coral reefs are important, and how all sea creatures work together.</p>
+                    <p>When it was time to return, Princess Marina gave them each a small pearl. "Remember," she said, "the ocean is our shared home. Take care of it."</p>
+                    <p>Back on the beach, the boys returned to normal, but their hearts were forever changed. They became ocean protectors, picking up litter and telling others about the wonders beneath the waves.</p>
+                </div>
+
+                <div class="moral">
+                    <strong>Remember, ocean explorers: The sea is full of amazing creatures and treasures. Help keep our oceans clean and beautiful for everyone! 🌊</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 7: The Cloud Castle -->
+        <div id="story7" class="story">
+            <div class="story-header">
+                <h2 class="story-title">Story 7: The Cloud Castle ☁️</h2>
+                <p class="story-subtitle">A rainbow ladder leads to a castle in the clouds!</p>
+            </div>
+            <div class="story-content">
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 1: The Rainbow Ladder 🌈</h3>
+                    <img src="images/story7_illustration1.png" alt="Brothers climbing rainbow ladder" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Once upon a time, after a big rainstorm, Jathin and Kethan saw the most amazing rainbow they had ever seen. But this wasn't an ordinary rainbow - it seemed to form a ladder reaching up into the sky!</p>
+                    <p>"Look!" Kethan pointed. "It's like a ladder to the clouds!"</p>
+                    <p>Curious, they climbed the rainbow ladder. Each step was soft and bouncy, like walking on cotton candy. Higher and higher they went, until they reached a fluffy white cloud.</p>
+                    <p>At the top, they found themselves in front of a magnificent castle made entirely of clouds, with towers of whipped cream and walls of mist.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 2: Meeting the Cloud People ☁️</h3>
+                    <img src="images/story7_illustration2.png" alt="Brothers meeting cloud creatures" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>The castle door opened by itself, and they were greeted by the Cloud King, a wise figure made of swirling mist with a crown of tiny lightning bolts.</p>
+                    <p>"Welcome, earth visitors!" the Cloud King boomed gently. "I am Nimbus, ruler of the Sky Kingdom."</p>
+                    <p>He introduced them to his cloud subjects: Fluffy the Cloud Bunny, who hopped on soft clouds; Sparkle the Cloud Bird, who sang songs that made rainbows; and Misty the Cloud Fairy, who painted pictures with morning dew.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 3: The Weather Workshop 🌤️</h3>
+                    <img src="images/story7_illustration3.png" alt="Brothers learning about weather" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Nimbus took them to the Weather Workshop, where clouds created all kinds of weather. "We make rain to water the flowers, sunshine to help plants grow, and wind to carry seeds," he explained.</p>
+                    <p>The boys helped mix a batch of gentle spring rain. Jathin stirred sunshine into the mix, while Kethan added just the right amount of wind. The result was perfect weather for a picnic!</p>
+                    <p>They learned that every type of weather had a purpose and that balance was important.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 4: The Sky Adventure ✈️</h3>
+                    <img src="images/story7_illustration4.png" alt="Brothers flying on cloud chariots" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>For their grand adventure, Nimbus gave them cloud chariots pulled by magical cloud horses. They soared through the sky, visiting fluffy cloud islands and racing with the wind.</p>
+                    <p>They saw how clouds changed shapes, learned about different types of clouds, and discovered that the sky was full of wonders.</p>
+                    <p>As the sun began to set, painting the sky in beautiful colors, it was time to return home. "Remember," Nimbus said, "the sky watches over you. Look up and dream big!"</p>
+                    <p>Back on the ground, Jathin and Kethan often gazed at the clouds, seeing shapes and remembering their sky adventure. They knew that imagination could take them anywhere.</p>
+                </div>
+
+                <div class="moral">
+                    <strong>Remember, sky dreamers: Look up at the clouds and let your imagination soar. The world is full of wonders waiting to be discovered! ☁️</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 8: The Animal Orchestra -->
+        <div id="story8" class="story">
+            <div class="story-header">
+                <h2 class="story-title">Story 8: The Animal Orchestra 🎵</h2>
+                <p class="story-subtitle">Animals form a musical orchestra!</p>
+            </div>
+            <div class="story-content">
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 1: The Musical Meadow 🎼</h3>
+                    <img src="images/story8_illustration1.png" alt="Brothers discovering animal musicians" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>One beautiful spring morning, Jathin and Kethan were walking through Sunny Meadow when they heard the most wonderful music. It wasn't just any music - it was a full orchestra playing a cheerful symphony!</p>
+                    <p>Following the sounds, they discovered a group of animals performing together. There was Leo the Lion playing drums on a hollow log, Bella the Bird playing flute with her beak, Freddy the Frog playing violin on a blade of grass, and many others.</p>
+                    <p>Standing on a tree stump conducting was Ollie the Wise Owl. "Welcome to the Animal Orchestra!" he hooted.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 2: Meeting the Musicians 🎶</h3>
+                    <img src="images/story8_illustration2.png" alt="Brothers meeting animal musicians" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>The animals welcomed the boys warmly. "We play music to celebrate nature's beauty," explained Ollie. "Each animal brings their own special sound."</p>
+                    <p>They met the talented musicians: Cricket Charlie played tiny cymbals that went "ting-ting-ting"; Beaver Benny played a xylophone made from smooth river stones; Elephant Ellie played a deep tuba made from a giant leaf; and Monkey Max played fast rhythms on coconut shells.</p>
+                    <p>Jathin and Kethan were amazed at how each animal used their natural abilities to create music.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 3: Learning to Play 🎵</h3>
+                    <img src="images/story8_illustration3.png" alt="Brothers learning to play instruments" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>"Would you like to join our orchestra?" Ollie asked. The boys were thrilled!</p>
+                    <p>Jathin learned to play the drums from Leo, discovering that rhythm was like a heartbeat. Kethan learned the flute from Bella, finding that music could express feelings like joy and peace.</p>
+                    <p>They practiced every day. At first, their notes were wobbly, but with patience and practice, they improved. The animals taught them that making music was about listening to each other and playing together.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 4: The Grand Performance 🎪</h3>
+                    <img src="images/story8_illustration4.png" alt="Animal orchestra grand concert" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Finally, it was time for the Grand Meadow Concert. All the animals and the boys performed together under the setting sun.</p>
+                    <p>Jathin played a powerful drum solo that made the ground shake gently. Kethan played a beautiful flute melody that soared like a bird. Together, they created a symphony that celebrated friendship, nature, and harmony.</p>
+                    <p>The forest audience cheered with hoots, barks, and claps. Even the trees seemed to sway in rhythm!</p>
+                    <p>After the concert, Ollie said, "Music brings us all together. Remember, everyone has a special song inside them."</p>
+                    <p>Jathin and Kethan continued to visit the Animal Orchestra, knowing that music could turn ordinary moments into magical ones.</p>
+                </div>
+
+                <div class="moral">
+                    <strong>Remember, young musicians: Everyone has music in their heart. Listen, practice, and create beautiful sounds with your friends! 🎼</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 9: The Wish-Granting Star -->
+        <div id="story9" class="story">
+            <div class="story-header">
+                <h2 class="story-title">Story 9: The Wish-Granting Star ⭐</h2>
+                <p class="story-subtitle">A shooting star grants wishes!</p>
+            </div>
+            <div class="story-content">
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 1: The Shooting Star 🌟</h3>
+                    <img src="images/story9_illustration1.png" alt="Brothers watching shooting star" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>One magical summer night, Jathin and Kethan were stargazing in their backyard. The sky was like a blanket of diamonds, with millions of stars twinkling above.</p>
+                    <p>"Look!" Kethan shouted. "A shooting star!"</p>
+                    <p>As the bright star streaked across the sky, leaving a trail of sparkling light, they remembered the old saying: "Star light, star bright, first star I see tonight..."</p>
+                    <p>They closed their eyes and made their wishes. Jathin wished for endless adventures, while Kethan wished for the ability to help others.</p>
+                    <p>Suddenly, a soft voice echoed in their minds: "Your wishes are heard. But remember, true magic comes from within."</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 2: The Star's Gift 💫</h3>
+                    <img src="images/story9_illustration2.png" alt="Brothers receiving wish stones" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>The next morning, they found a beautiful star-shaped pendant on each of their pillows. The pendants glowed softly and felt warm to the touch.</p>
+                    <p>"What are these?" Jathin wondered.</p>
+                    <p>As they held the pendants, they felt a surge of energy. The star's voice returned: "These are Wish Stones. They will help your wishes come true, but you must work for them."</p>
+                    <p>The boys learned that the pendants gave them special abilities to make their wishes happen.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 3: Adventures Begin 🏃‍♂️</h3>
+                    <img src="images/story9_illustration3.png" alt="Brothers having adventures with wish stones" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Jathin's pendant helped him discover amazing adventures everywhere. He found secret trails in the woods, hidden caves, and mysterious old books that told incredible stories.</p>
+                    <p>Kethan's pendant helped him find ways to help others. He organized a neighborhood cleanup, helped his teacher with class projects, and started a kindness club at school.</p>
+                    <p>They learned that wishes don't just happen - you have to work to make them come true.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 4: The Greatest Wish ❤️</h3>
+                    <img src="images/story9_illustration4.png" alt="Brothers realizing their greatest wish" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>One night, as they looked up at the stars again, they realized their greatest wish had already come true - they had each other as brothers and best friends.</p>
+                    <p>The star's voice returned: "You have learned the most important lesson. The best wishes come from the heart, and the greatest magic is love and friendship."</p>
+                    <p>The pendants glowed brighter than ever, reminding them that they had the power to make their own magic every day.</p>
+                    <p>From then on, Jathin and Kethan knew that wishing upon a star was just the beginning. The real magic happened when they worked hard and cared for others.</p>
+                </div>
+
+                <div class="moral">
+                    <strong>Remember, wish makers: Stars can guide your dreams, but you have the power to make them come true through hard work and kindness! ✨</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 10: The Garden of Dreams -->
+        <div id="story10" class="story">
+            <div class="story-header">
+                <h2 class="story-title">Story 10: The Garden of Dreams 🌸</h2>
+                <p class="story-subtitle">A magical garden where dreams bloom like flowers!</p>
+            </div>
+            <div class="story-content">
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 1: The Secret Gate 🚪</h3>
+                    <img src="images/story10_illustration1.png" alt="Brothers finding the dream garden gate" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>Once upon a time, while exploring their neighborhood, Jathin and Kethan discovered an old stone wall covered in ivy and flowers. Behind the wall, they could hear soft whispers and see a gentle glow.</p>
+                    <p>"Let's see what's back there," Kethan said curiously.</p>
+                    <p>Pushing through the ivy, they found a hidden gate with a beautiful dreamcatcher symbol carved into the stone. As they touched the symbol, the gate swung open, revealing the most magical garden they had ever seen.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 2: The Dream Flowers 🌺</h3>
+                    <img src="images/story10_illustration2.png" alt="Brothers meeting the Dream Keeper" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>The Garden of Dreams was filled with flowers that glowed with inner light, trees with leaves that whispered secrets, and paths that seemed to lead to anywhere you imagined.</p>
+                    <p>A gentle figure made of soft light appeared - the Dream Keeper. "Welcome to my garden," she said. "Here, dreams bloom like flowers. What dreams do you wish to grow?"</p>
+                    <p>The boys learned that each flower represented a different dream. Red flowers for brave adventures, blue for peaceful moments, yellow for joyful laughter, and purple for kind deeds.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 3: Growing Dreams 🌱</h3>
+                    <img src="images/story10_illustration3.png" alt="Brothers planting dream seeds" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>The Dream Keeper taught them how to plant dream seeds. "Dreams need care to grow," she explained. "You must water them with belief, shine sunlight of hope on them, and protect them from doubt."</p>
+                    <p>Jathin planted a seed of adventure, watching it sprout into a tree with leaves shaped like treasure maps. Kethan planted a seed of kindness, which bloomed into flowers that smiled and waved.</p>
+                    <p>They learned that the most beautiful dreams were those that helped others and brought joy to the world.</p>
+                </div>
+
+                <div class="illustration-section">
+                    <h3 class="illustration-title">Illustration 4: Dreams Come True 🌟</h3>
+                    <img src="images/story10_illustration4.png" alt="Brothers experiencing their dreams" class="illustration">
+                </div>
+                <div class="story-text">
+                    <p>As their dreams grew, amazing things happened. Jathin's adventure tree led him on safe explorations, finding beautiful shells and interesting rocks. Kethan's kindness flowers helped him notice ways to help - carrying water for thirsty plants, sharing snacks with hungry birds.</p>
+                    <p>The Dream Keeper smiled. "You see? Dreams don't just happen. You make them real through your actions every day."</p>
+                    <p>The garden taught them that imagination was powerful, but combining it with hard work and kindness made dreams come true.</p>
+                </div>
+
+                <div class="moral">
+                    <strong>Remember, dreamers: Plant your dreams with care, water them with belief, and watch them grow into beautiful realities! 🌱</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>🎉 The End of Our Magical Adventures! 🎉</h3>
+            <p>This story book is dedicated to Jathin and Kethan - may your adventures be filled with wonder, your hearts with kindness, and your dreams with magic! ✨📚💫</p>
+            <p class="bounce">🌟 Keep dreaming and exploring! 🌟</p>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive fun
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click effects to illustrations
+            const illustrations = document.querySelectorAll('.illustration');
+            illustrations.forEach(img => {
+                img.addEventListener('click', function() {
+                    this.style.transform = this.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
+                    this.style.transition = 'transform 0.3s ease';
+                });
+            });
+
+            // Add sparkle effect to headers
+            const headers = document.querySelectorAll('.story-title');
+            headers.forEach(header => {
+                header.addEventListener('mouseover', function() {
+                    this.style.textShadow = '2px 2px 4px rgba(0,0,0,0.3), 0 0 10px #ff6b6b, 0 0 20px #ff6b6b';
+                });
+                header.addEventListener('mouseout', function() {
+                    this.style.textShadow = '2px 2px 4px rgba(0,0,0,0.1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
