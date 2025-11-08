@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STD Transmission Routes and Clinical Features - Clickable Diagram</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .diagram-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .transmission-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .transmission-route {
+            width: 150px;
+            height: 150px;
+            background-color: #e3f2fd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            position: relative;
+        }
+        .transmission-route:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+        .clinical-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background-color: #fff3e0;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid #ff9800;
+        }
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .info-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-left: 4px solid #2196f3;
+            display: none;
+        }
+        .info-panel.show {
+            display: block;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .back-btn {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .back-btn:hover {
+            background-color: #1976d2;
+        }
+        .route-icon {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>STD Transmission Routes and Clinical Features - Interactive Diagram</h1>
+    <div class="diagram-container">
+        <h2>Transmission Routes</h2>
+        <div class="transmission-diagram">
+            <div class="transmission-route" id="sexual">
+                <div>
+                    <div class="route-icon">👫</div>
+                    <div>Sexual Contact</div>
+                </div>
+            </div>
+            <div class="transmission-route" id="vertical">
+                <div>
+                    <div class="route-icon">👶</div>
+                    <div>Mother-to-Child</div>
+                </div>
+            </div>
+            <div class="transmission-route" id="blood">
+                <div>
+                    <div class="route-icon">💉</div>
+                    <div>Blood Products</div>
+                </div>
+            </div>
+            <div class="transmission-route" id="sharing">
+                <div>
+                    <div class="route-icon">🔪</div>
+                    <div>Sharing Needles</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Common STDs and Clinical Features</h2>
+        <div class="clinical-features">
+            <div class="feature-card" id="syphilis">
+                <h3>Syphilis</h3>
+                <p>Primary: Chancre<br>Secondary: Rash, Fever<br>Tertiary: Neurosyphilis</p>
+            </div>
+            <div class="feature-card" id="gonorrhea">
+                <h3>Gonorrhea</h3>
+                <p>Urethral discharge<br>Dysuria<br>Pelvic pain</p>
+            </div>
+            <div class="feature-card" id="chlamydia">
+                <h3>Chlamydia</h3>
+                <p>Asymptomatic<br>Mucopurulent discharge<br>PID complications</p>
+            </div>
+            <div class="feature-card" id="hiv">
+                <h3>HIV</h3>
+                <p>Acute: Fever, Rash<br>Chronic: Asymptomatic<br>AIDS: Opportunistic infections</p>
+            </div>
+            <div class="feature-card" id="hepatitis">
+                <h3>Hepatitis B/C</h3>
+                <p>Jaundice<br>Fatigue<br>Chronic liver disease</p>
+            </div>
+            <div class="feature-card" id="herpes">
+                <h3>Genital Herpes</h3>
+                <p>Painful ulcers<br>Recurrent episodes<br>Asymptomatic shedding</p>
+            </div>
+        </div>
+
+        <div class="info-panel" id="info-panel">
+            <h3 id="condition-title"></h3>
+            <p id="condition-description"></p>
+            <p id="condition-epidemiology"></p>
+            <p id="condition-indian-context"></p>
+            <button class="back-btn" onclick="hideInfo()">Back to Diagram</button>
+        </div>
+    </div>
+
+    <script>
+        const transmissionRoutes = {
+            sexual: {
+                title: "Sexual Transmission",
+                description: "Most common route for bacterial and viral STDs. Includes vaginal, anal, and oral sex.",
+                epidemiology: "Accounts for 80-90% of STD transmissions globally.",
+                indian_context: "Heterosexual transmission predominant in India. High-risk groups include sex workers and MSM."
+            },
+            vertical: {
+                title: "Mother-to-Child Transmission",
+                description: "Transmission from infected mother to child during pregnancy, delivery, or breastfeeding.",
+                epidemiology: "Major route for HIV, Syphilis, and Hepatitis B transmission to infants.",
+                indian_context: "NACO reports ~30,000 pediatric HIV cases annually. Prevention through ART and safe delivery crucial."
+            },
+            blood: {
+                title: "Blood and Blood Products",
+                description: "Transmission through contaminated blood transfusions, organ transplants, or medical procedures.",
+                epidemiology: "Now rare due to screening, but still risk in some developing countries.",
+                indian_context: "Universal screening implemented, but occasional lapses reported. Risk higher in private clinics."
+            },
+            sharing: {
+                title: "Sharing Needles/Syringes",
+                description: "Common among injecting drug users. Also risk from tattooing/piercing with unsterilized equipment.",
+                epidemiology: "Significant contributor to HIV and Hepatitis C epidemics.",
+                indian_context: "IDU accounts for 7-10% of HIV cases in India. Harm reduction programs essential."
+            }
+        };
+
+        const clinicalFeatures = {
+            syphilis: {
+                title: "Syphilis - Clinical Features",
+                description: "Treponema pallidum infection with three stages: Primary (chancre), Secondary (systemic symptoms), Tertiary (organ damage).",
+                epidemiology: "Global prevalence: 6-12 million cases annually. India: ~2 million cases estimated.",
+                indian_context: "Rising incidence in urban areas. Congenital syphilis affects ~50,000 newborns yearly. NACO surveillance shows increasing trend."
+            },
+            gonorrhea: {
+                title: "Gonorrhea - Clinical Features",
+                description: "Neisseria gonorrhoeae infection causing urethritis, cervicitis, pharyngitis, proctitis.",
+                epidemiology: "89 million cases globally annually. Antibiotic resistance emerging worldwide.",
+                indian_context: "High prevalence in urban slums and red-light areas. Co-infection with Chlamydia common. Drug resistance reported."
+            },
+            chlamydia: {
+                title: "Chlamydia - Clinical Features",
+                description: "Chlamydia trachomatis infection, often asymptomatic. Can cause PID, infertility, ectopic pregnancy.",
+                epidemiology: "131 million cases globally. Most common bacterial STD.",
+                indian_context: "Under-diagnosed due to asymptomatic nature. High prevalence among young adults. Screening programs limited."
+            },
+            hiv: {
+                title: "HIV - Clinical Features",
+                description: "Acute retroviral syndrome, then asymptomatic period, progressing to AIDS with opportunistic infections.",
+                epidemiology: "38 million people living with HIV globally. India: ~2.1 million PLHIV.",
+                indian_context: "Heterosexual transmission dominant. High burden in South India. ART coverage >80%. Prevention focus on key populations."
+            },
+            hepatitis: {
+                title: "Hepatitis B/C - Clinical Features",
+                description: "HBV: Acute hepatitis, chronic carrier state, cirrhosis, HCC. HCV: Often asymptomatic, chronic hepatitis.",
+                epidemiology: "HBV: 296 million chronic carriers. HCV: 71 million infected.",
+                indian_context: "HBV prevalence 2-4%. HCV 0.5-1.5%. High-risk groups: healthcare workers, IDUs. Vaccination program for HBV."
+            },
+            herpes: {
+                title: "Genital Herpes - Clinical Features",
+                description: "HSV-2 infection causing recurrent genital ulcers. HSV-1 can cause genital herpes.",
+                epidemiology: "491 million people aged 15-49 infected globally.",
+                indian_context: "Prevalence 10-20% in general population. Often undiagnosed. Increases HIV transmission risk 2-3 fold."
+            }
+        };
+
+        document.querySelectorAll('.transmission-route').forEach(element => {
+            element.addEventListener('click', function() {
+                const routeId = this.id;
+                const route = transmissionRoutes[routeId];
+                showInfo(route);
+            });
+        });
+
+        document.querySelectorAll('.feature-card').forEach(element => {
+            element.addEventListener('click', function() {
+                const featureId = this.id;
+                const feature = clinicalFeatures[featureId];
+                showInfo(feature);
+            });
+        });
+
+        function showInfo(info) {
+            document.getElementById('condition-title').textContent = info.title;
+            document.getElementById('condition-description').textContent = info.description;
+            document.getElementById('condition-epidemiology').textContent = "Epidemiology: " + info.epidemiology;
+            document.getElementById('condition-indian-context').textContent = "Indian Context: " + info.indian_context;
+            document.getElementById('info-panel').classList.add('show');
+        }
+
+        function hideInfo() {
+            document.getElementById('info-panel').classList.remove('show');
+        }
+    </script>
+</body>
+</html>

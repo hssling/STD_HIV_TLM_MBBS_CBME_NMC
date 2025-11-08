@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Timeline of STD Programs in India</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .timeline-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #2196f3;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        .timeline-item.left {
+            left: 0;
+        }
+        .timeline-item.right {
+            left: 50%;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -17px;
+            background-color: white;
+            border: 4px solid #2196f3;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-item.right::after {
+            left: -16px;
+        }
+        .timeline-item.active .timeline-content {
+            background-color: #e3f2fd;
+            border-color: #1976d2;
+        }
+        .timeline-item.active::after {
+            background-color: #1976d2;
+        }
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: #fff;
+            position: relative;
+            border-radius: 6px;
+            border-left: 5px solid #2196f3;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .timeline-content:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .timeline-year {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2196f3;
+            margin-bottom: 10px;
+        }
+        .timeline-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .timeline-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        .detail-panel {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        .detail-panel.show {
+            display: block;
+        }
+        .detail-media {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .detail-image {
+            flex: 1;
+            max-width: 300px;
+        }
+        .detail-image img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .detail-info {
+            flex: 2;
+        }
+        .detail-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2196f3;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .close-btn {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+            margin-bottom: 10px;
+        }
+        .close-btn:hover {
+            background-color: #1976d2;
+        }
+        .navigation {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .nav-btn {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+        .nav-btn:hover {
+            background-color: #45a049;
+        }
+        .nav-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Timeline: Evolution of STD Programs in India</h1>
+    <p>Explore the historical development of STD control programs in India. Click on any timeline event to learn more about its impact and significance.</p>
+
+    <div class="timeline-container">
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn" onclick="navigateTimeline(-1)" disabled>Previous</button>
+            <span id="current-period">1980s-1990s</span>
+            <button class="nav-btn" id="next-btn" onclick="navigateTimeline(1)">Next</button>
+        </div>
+
+        <div class="timeline" id="timeline">
+            <!-- Timeline items will be dynamically generated -->
+        </div>
+
+        <div class="detail-panel" id="detail-panel">
+            <button class="close-btn" onclick="closeDetail()">Close</button>
+            <div class="detail-media">
+                <div class="detail-image">
+                    <img id="detail-image" src="" alt="Program visual">
+                </div>
+                <div class="detail-info">
+                    <h2 id="detail-title"></h2>
+                    <p id="detail-description"></p>
+                    <p id="detail-impact"></p>
+                </div>
+            </div>
+            <div class="detail-stats" id="detail-stats">
+                <!-- Statistics will be dynamically generated -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPeriod = 0;
+        const periods = ['1980s-1990s', '2000s', '2010s', '2020s'];
+
+        const timelineData = {
+            '1980s-1990s': [
+                {
+                    year: '1986',
+                    title: 'National STD Control Programme',
+                    description: 'Establishment of dedicated STD control program under Ministry of Health.',
+                    impact: 'First comprehensive approach to STD management in India.',
+                    image: 'https://via.placeholder.com/300x200/2196f3/white?text=STD+Programme+1986',
+                    stats: [
+                        { value: '2.5M', label: 'Estimated STD Cases' },
+                        { value: '150', label: 'STD Clinics Established' },
+                        { value: '₹50M', label: 'Annual Budget' }
+                    ]
+                },
+                {
+                    year: '1992',
+                    title: 'HIV/AIDS Detection',
+                    description: 'First HIV case detected in India, leading to integrated HIV-STD approach.',
+                    impact: 'Shift from STD-only to HIV-STD co-infection management.',
+                    image: 'https://via.placeholder.com/300x200/ff9800/white?text=HIV+Detection+1992',
+                    stats: [
+                        { value: '1,000+', label: 'HIV Cases Identified' },
+                        { value: '4 States', label: 'High-Prevalence States' },
+                        { value: '85%', label: 'Heterosexual Transmission' }
+                    ]
+                },
+                {
+                    year: '1999',
+                    title: 'NACO Establishment',
+                    description: 'National AIDS Control Organisation created for comprehensive HIV/AIDS response.',
+                    impact: 'Integrated HIV prevention, treatment, and care services nationwide.',
+                    image: 'https://via.placeholder.com/300x200/4caf50/white?text=NACO+1999',
+                    stats: [
+                        { value: '₹1.2B', label: 'Initial Budget' },
+                        { value: '500+', label: 'NACO Staff' },
+                        { value: '35 States', label: 'Program Coverage' }
+                    ]
+                }
+            ],
+            '2000s': [
+                {
+                    year: '2004',
+                    title: 'Free ART Programme',
+                    description: 'Launch of free antiretroviral therapy for HIV patients.',
+                    impact: 'Made HIV treatment accessible to millions, reduced mortality significantly.',
+                    image: 'https://via.placeholder.com/300x200/9c27b0/white?text=Free+ART+2004',
+                    stats: [
+                        { value: '100K', label: 'Patients on ART' },
+                        { value: '₹2.5B', label: 'Annual ART Cost' },
+                        { value: '85%', label: 'Treatment Success Rate' }
+                    ]
+                },
+                {
+                    year: '2007',
+                    title: 'Targeted Interventions',
+                    description: 'Focused prevention programs for high-risk groups including sex workers and MSM.',
+                    impact: 'Reduced HIV transmission in key populations through tailored interventions.',
+                    image: 'https://via.placeholder.com/300x200/ff5722/white?text=Targeted+Interventions+2007',
+                    stats: [
+                        { value: '1.2M', label: 'High-Risk Individuals Reached' },
+                        { value: '300', label: 'TI Projects' },
+                        { value: '40%', label: 'Condom Usage Increase' }
+                    ]
+                },
+                {
+                    year: '2009',
+                    title: 'Syndromic Management',
+                    description: 'Implementation of syndromic approach for STD diagnosis in resource-limited settings.',
+                    impact: 'Improved access to STD treatment in rural and urban slum areas.',
+                    image: 'https://via.placeholder.com/300x200/795548/white?text=Syndromic+Management+2009',
+                    stats: [
+                        { value: '50K', label: 'Health Facilities Trained' },
+                        { value: '80%', label: 'Diagnosis Accuracy' },
+                        { value: '₹500M', label: 'Program Investment' }
+                    ]
+                }
+            ],
+            '2010s': [
+                {
+                    year: '2013',
+                    title: 'HIV Sentinel Surveillance',
+                    description: 'Nationwide HIV surveillance system established for monitoring epidemic trends.',
+                    impact: 'Data-driven policy making and resource allocation for HIV programs.',
+                    image: 'https://via.placeholder.com/300x200/607d8b/white?text=HIV+Surveillance+2013',
+                    stats: [
+                        { value: '1,800', label: 'Sentinel Sites' },
+                        { value: '2.1M', label: 'PLHIV Estimated' },
+                        { value: '0.22%', label: 'Adult HIV Prevalence' }
+                    ]
+                },
+                {
+                    year: '2017',
+                    title: 'Test and Treat Policy',
+                    description: 'Immediate ART initiation for all HIV-positive individuals regardless of CD4 count.',
+                    impact: 'Reduced HIV transmission and improved health outcomes through early treatment.',
+                    image: 'https://via.placeholder.com/300x200/3f51b5/white?text=Test+and+Treat+2017',
+                    stats: [
+                        { value: '500K', label: 'Additional Patients on ART' },
+                        { value: 'U=U', label: 'Prevention Message' },
+                        { value: '90%', label: 'Viral Suppression Rate' }
+                    ]
+                },
+                {
+                    year: '2019',
+                    title: 'NVBDCP-STD Integration',
+                    description: 'Integration of STD control with National Vector Borne Disease Control Programme.',
+                    impact: 'Streamlined service delivery and improved resource utilization.',
+                    image: 'https://via.placeholder.com/300x200/009688/white?text=NVBDCP+Integration+2019',
+                    stats: [
+                        { value: '700', label: 'Integrated Centers' },
+                        { value: '₹1.8B', label: 'Combined Budget' },
+                        { value: '60%', label: 'Cost Savings' }
+                    ]
+                }
+            ],
+            '2020s': [
+                {
+                    year: '2020',
+                    title: 'COVID-19 Impact Response',
+                    description: 'Adaptation of STD services during COVID-19 pandemic with telemedicine and home delivery.',
+                    impact: 'Maintained continuity of HIV/STI services despite lockdown restrictions.',
+                    image: 'https://via.placeholder.com/300x200/f44336/white?text=COVID+Response+2020',
+                    stats: [
+                        { value: '50K', label: 'Teleconsultations' },
+                        { value: '6 Months', label: 'ART Stockpiling' },
+                        { value: '90%', label: 'Service Continuity' }
+                    ]
+                },
+                {
+                    year: '2022',
+                    title: 'Dolutegravir Transition',
+                    description: 'Nationwide switch to dolutegravir-based ART regimens for better efficacy and tolerability.',
+                    impact: 'Improved treatment outcomes and reduced side effects for HIV patients.',
+                    image: 'https://via.placeholder.com/300x200/673ab7/white?text=Dolutegravir+2022',
+                    stats: [
+                        { value: '1.5M', label: 'Patients Transitioned' },
+                        { value: '95%', label: 'Virological Success' },
+                        { value: '₹800M', label: 'Annual Savings' }
+                    ]
+                },
+                {
+                    year: '2024',
+                    title: 'Digital Health Integration',
+                    description: 'Implementation of digital tools for HIV/STI surveillance, treatment monitoring, and patient engagement.',
+                    impact: 'Enhanced program efficiency and patient outcomes through technology.',
+                    image: 'https://via.placeholder.com/300x200/2196f3/white?text=Digital+Health+2024',
+                    stats: [
+                        { value: '10M', label: 'Digital Registrations' },
+                        { value: '80%', label: 'Appointment Adherence' },
+                        { value: '₹500M', label: 'Efficiency Gains' }
+                    ]
+                }
+            ]
+        };
+
+        function initTimeline() {
+            renderTimeline();
+        }
+
+        function renderTimeline() {
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = '';
+
+            const currentData = timelineData[periods[currentPeriod]];
+
+            currentData.forEach((item, index) => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = `timeline-item ${index % 2 === 0 ? 'left' : 'right'}`;
+
+                const content = document.createElement('div');
+                content.className = 'timeline-content';
+                content.onclick = () => showDetail(item);
+
+                content.innerHTML = `
+                    <div class="timeline-year">${item.year}</div>
+                    <div class="timeline-title">${item.title}</div>
+                    <div class="timeline-description">${item.description}</div>
+                `;
+
+                timelineItem.appendChild(content);
+                timeline.appendChild(timelineItem);
+            });
+
+            updateNavigation();
+        }
+
+        function showDetail(item) {
+            document.getElementById('detail-title').textContent = `${item.year}: ${item.title}`;
+            document.getElementById('detail-description').textContent = item.description;
+            document.getElementById('detail-impact').textContent = `Impact: ${item.impact}`;
+            document.getElementById('detail-image').src = item.image;
+
+            const statsContainer = document.getElementById('detail-stats');
+            statsContainer.innerHTML = '';
+
+            item.stats.forEach(stat => {
+                const statCard = document.createElement('div');
+                statCard.className = 'stat-card';
+                statCard.innerHTML = `
+                    <div class="stat-value">${stat.value}</div>
+                    <div class="stat-label">${stat.label}</div>
+                `;
+                statsContainer.appendChild(statCard);
+            });
+
+            document.getElementById('detail-panel').classList.add('show');
+        }
+
+        function closeDetail() {
+            document.getElementById('detail-panel').classList.remove('show');
+        }
+
+        function navigateTimeline(direction) {
+            currentPeriod += direction;
+            document.getElementById('current-period').textContent = periods[currentPeriod];
+            renderTimeline();
+        }
+
+        function updateNavigation() {
+            document.getElementById('prev-btn').disabled = currentPeriod === 0;
+            document.getElementById('next-btn').disabled = currentPeriod === periods.length - 1;
+        }
+
+        initTimeline();
+    </script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STD Case Study - Decision Tree</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .case-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .decision-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .node {
+            background-color: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            max-width: 300px;
+        }
+        .node:hover {
+            background-color: #bbdefb;
+            transform: scale(1.05);
+        }
+        .node.active {
+            background-color: #2196f3;
+            color: white;
+        }
+        .option {
+            background-color: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option:hover {
+            background-color: #ffe0b2;
+        }
+        .option.selected {
+            background-color: #ff9800;
+            color: white;
+        }
+        .outcome {
+            background-color: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px;
+            text-align: center;
+            max-width: 400px;
+        }
+        .outcome.correct {
+            background-color: #c8e6c9;
+        }
+        .outcome.incorrect {
+            background-color: #ffcdd2;
+            border-color: #f44336;
+        }
+        .reset-btn {
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .reset-btn:hover {
+            background-color: #7b1fa2;
+        }
+        .hidden {
+            display: none;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>STD Case Study - Interactive Decision Tree</h1>
+
+    <div class="case-container">
+        <h2>Case Study: 25-year-old Female with Genital Symptoms</h2>
+        <p><strong>Patient History:</strong> A 25-year-old unmarried female presents with vaginal discharge and lower abdominal pain for 1 week. She reports unprotected sexual intercourse with a new partner 2 weeks ago. No history of similar complaints. Lives in Delhi, India.</p>
+        <p><strong>Clinical Findings:</strong> Yellowish vaginal discharge, lower abdominal tenderness, cervical motion tenderness. No fever. Urine pregnancy test negative.</p>
+    </div>
+
+    <div class="case-container">
+        <h2>Decision Tree: Diagnostic Approach</h2>
+        <div class="decision-tree" id="decision-tree">
+            <!-- Initial Question -->
+            <div class="node active" id="initial">
+                What is your primary differential diagnosis?
+            </div>
+
+            <!-- Options for initial -->
+            <div class="option" data-parent="initial" data-next="gonorrhea">Gonorrhea with PID</div>
+            <div class="option" data-parent="initial" data-next="chlamydia">Chlamydia with PID</div>
+            <div class="option" data-parent="initial" data-next="bacterial">Bacterial Vaginosis</div>
+            <div class="option" data-parent="initial" data-next="yeast">Yeast Infection</div>
+
+            <!-- Gonorrhea branch -->
+            <div class="node hidden" id="gonorrhea">
+                What diagnostic tests would you order first?
+            </div>
+            <div class="option hidden" data-parent="gonorrhea" data-next="gram-stain">Gram stain and culture</div>
+            <div class="option hidden" data-parent="gonorrhea" data-next="pcr">NAAT/PCR testing</div>
+            <div class="option hidden" data-parent="gonorrhea" data-next="clinical">Clinical diagnosis only</div>
+
+            <!-- Gram stain outcome -->
+            <div class="outcome hidden correct" id="gram-stain">
+                <h3>Correct!</h3>
+                <p>Gram-negative diplococci on gram stain suggest Neisseria gonorrhoeae. Culture confirms diagnosis.</p>
+                <p><strong>Indian Context:</strong> Gonorrhea prevalence high in urban areas. Co-infection with Chlamydia common (30-50%). Drug resistance emerging.</p>
+            </div>
+
+            <!-- PCR outcome -->
+            <div class="outcome hidden correct" id="pcr">
+                <h3>Also Correct!</h3>
+                <p>NAAT/PCR is highly sensitive for gonorrhea detection, especially from urine or vaginal swabs.</p>
+                <p><strong>Indian Context:</strong> Molecular testing becoming more available in urban centers. Useful for asymptomatic screening.</p>
+            </div>
+
+            <!-- Clinical outcome -->
+            <div class="outcome hidden incorrect" id="clinical">
+                <h3>Incorrect</h3>
+                <p>Clinical diagnosis alone is unreliable. Laboratory confirmation essential for proper treatment.</p>
+            </div>
+
+            <!-- Chlamydia branch -->
+            <div class="node hidden" id="chlamydia">
+                How would you confirm Chlamydia diagnosis?
+            </div>
+            <div class="option hidden" data-parent="chlamydia" data-next="chlam-pcr">NAAT/PCR for Chlamydia</div>
+            <div class="option hidden" data-parent="chlamydia" data-next="chlam-culture">Culture</div>
+            <div class="option hidden" data-parent="chlamydia" data-next="chlam-serology">Serology</div>
+
+            <!-- Chlam PCR outcome -->
+            <div class="outcome hidden correct" id="chlam-pcr">
+                <h3>Correct!</h3>
+                <p>NAAT/PCR is the gold standard for Chlamydia trachomatis detection.</p>
+                <p><strong>Indian Context:</strong> Chlamydia often asymptomatic. High prevalence among young adults. Screening recommended for high-risk groups.</p>
+            </div>
+
+            <!-- Chlam culture outcome -->
+            <div class="outcome hidden incorrect" id="chlam-culture">
+                <h3>Incorrect</h3>
+                <p>Chlamydia culture is technically difficult and not routinely used. NAAT is preferred.</p>
+            </div>
+
+            <!-- Chlam serology outcome -->
+            <div class="outcome hidden incorrect" id="chlam-serology">
+                <h3>Incorrect</h3>
+                <p>Serology cannot distinguish current from past infection. Not useful for acute diagnosis.</p>
+            </div>
+
+            <!-- Bacterial Vaginosis branch -->
+            <div class="node hidden" id="bacterial">
+                What clinical feature suggests Bacterial Vaginosis?
+            </div>
+            <div class="option hidden" data-parent="bacterial" data-next="whiff">Positive whiff test</div>
+            <div class="option hidden" data-parent="bacterial" data-next="clue">Clue cells on wet mount</div>
+            <div class="option hidden" data-parent="bacterial" data-next="ph">pH >4.5</div>
+
+            <!-- Whiff outcome -->
+            <div class="outcome hidden correct" id="whiff">
+                <h3>Correct!</h3>
+                <p>Positive whiff test (fishy odor with KOH) is characteristic of Bacterial Vaginosis.</p>
+                <p><strong>Indian Context:</strong> BV common in reproductive age women. Associated with adverse pregnancy outcomes.</p>
+            </div>
+
+            <!-- Clue outcome -->
+            <div class="outcome hidden correct" id="clue">
+                <h3>Also Correct!</h3>
+                <p>Clue cells (epithelial cells studded with bacteria) are pathognomonic for BV.</p>
+            </div>
+
+            <!-- pH outcome -->
+            <div class="outcome hidden correct" id="ph">
+                <h3>Also Correct!</h3>
+                <p>Vaginal pH >4.5 supports BV diagnosis. Normal vaginal pH is 3.8-4.5.</p>
+            </div>
+
+            <!-- Yeast branch -->
+            <div class="node hidden" id="yeast">
+                What would confirm Candidiasis?
+            </div>
+            <div class="option hidden" data-parent="yeast" data-next="koh">KOH mount showing hyphae</div>
+            <div class="option hidden" data-parent="yeast" data-next="culture-yeast">Fungal culture</div>
+            <div class="option hidden" data-parent="yeast" data-next="symptoms-yeast">Symptoms alone</div>
+
+            <!-- KOH outcome -->
+            <div class="outcome hidden correct" id="koh">
+                <h3>Correct!</h3>
+                <p>KOH preparation showing pseudohyphae/pseudomycelia confirms Candidiasis.</p>
+                <p><strong>Indian Context:</strong> Vaginal candidiasis very common. Often recurrent. Diabetes and antibiotic use are risk factors.</p>
+            </div>
+
+            <!-- Culture yeast outcome -->
+            <div class="outcome hidden correct" id="culture-yeast">
+                <h3>Also Correct!</h3>
+                <p>Fungal culture can identify species and confirm diagnosis.</p>
+            </div>
+
+            <!-- Symptoms yeast outcome -->
+            <div class="outcome hidden incorrect" id="symptoms-yeast">
+                <h3>Incorrect</h3>
+                <p>While symptoms are suggestive, microscopic confirmation is needed for accurate diagnosis.</p>
+            </div>
+        </div>
+
+        <button class="reset-btn" onclick="resetTree()">Reset Decision Tree</button>
+    </div>
+
+    <script>
+        let currentNode = 'initial';
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const nextNode = this.getAttribute('data-next');
+                showNode(nextNode);
+                this.classList.add('selected');
+            });
+        });
+
+        function showNode(nodeId) {
+            // Hide all nodes and options
+            document.querySelectorAll('.node, .option, .outcome').forEach(el => {
+                el.classList.add('hidden');
+            });
+
+            // Show the target node
+            const targetNode = document.getElementById(nodeId);
+            targetNode.classList.remove('hidden');
+
+            // If it's an outcome, show it
+            if (targetNode.classList.contains('outcome')) {
+                targetNode.classList.remove('hidden');
+            } else {
+                // Show options for this node
+                document.querySelectorAll(`.option[data-parent="${nodeId}"]`).forEach(option => {
+                    option.classList.remove('hidden');
+                });
+            }
+        }
+
+        function resetTree() {
+            // Hide all except initial
+            document.querySelectorAll('.node, .option, .outcome').forEach(el => {
+                el.classList.add('hidden');
+            });
+
+            // Remove selected class
+            document.querySelectorAll('.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // Show initial node and its options
+            document.getElementById('initial').classList.remove('hidden');
+            document.querySelectorAll('.option[data-parent="initial"]').forEach(option => {
+                option.classList.remove('hidden');
+            });
+        }
+    </script>
+</body>
+</html>

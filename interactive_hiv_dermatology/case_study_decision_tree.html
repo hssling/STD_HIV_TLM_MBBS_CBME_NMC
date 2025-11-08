@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIV Dermatology Case Study - Decision Tree</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .case-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .decision-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .node {
+            background-color: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            max-width: 300px;
+        }
+        .node:hover {
+            background-color: #bbdefb;
+            transform: scale(1.05);
+        }
+        .node.active {
+            background-color: #2196f3;
+            color: white;
+        }
+        .option {
+            background-color: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option:hover {
+            background-color: #ffe0b2;
+        }
+        .option.selected {
+            background-color: #ff9800;
+            color: white;
+        }
+        .outcome {
+            background-color: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px;
+            text-align: center;
+            max-width: 400px;
+        }
+        .outcome.correct {
+            background-color: #c8e6c9;
+        }
+        .outcome.incorrect {
+            background-color: #ffcdd2;
+            border-color: #f44336;
+        }
+        .reset-btn {
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .reset-btn:hover {
+            background-color: #7b1fa2;
+        }
+        .hidden {
+            display: none;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>HIV Dermatology Case Study - Interactive Decision Tree</h1>
+
+    <div class="case-container">
+        <h2>Case Study: 28-year-old Male with Skin Lesions</h2>
+        <p><strong>Patient History:</strong> A 28-year-old male presents with multiple purple-red patches on his legs and oral mucosa. He reports weight loss, night sweats, and fatigue. CD4 count: 180 cells/μL. Lives in Mumbai, India.</p>
+        <p><strong>Clinical Findings:</strong> Multiple violaceous plaques on lower extremities and hard palate. No fever currently.</p>
+    </div>
+
+    <div class="case-container">
+        <h2>Decision Tree: Diagnostic Approach</h2>
+        <div class="decision-tree" id="decision-tree">
+            <!-- Initial Question -->
+            <div class="node active" id="initial">
+                What is your primary differential diagnosis?
+            </div>
+
+            <!-- Options for initial -->
+            <div class="option" data-parent="initial" data-next="kaposi">Kaposi's Sarcoma</div>
+            <div class="option" data-parent="initial" data-next="bacillary">Bacillary Angiomatosis</div>
+            <div class="option" data-parent="initial" data-next="drug">Drug-induced rash</div>
+            <div class="option" data-parent="initial" data-next="vascular">Vascular malformation</div>
+
+            <!-- Kaposi's Sarcoma branch -->
+            <div class="node hidden" id="kaposi">
+                What would you do next for suspected Kaposi's Sarcoma?
+            </div>
+            <div class="option hidden" data-parent="kaposi" data-next="biopsy">Biopsy for histopathology</div>
+            <div class="option hidden" data-parent="kaposi" data-next="cd4">Check CD4 count only</div>
+            <div class="option hidden" data-parent="kaposi" data-next="treat">Start ART immediately</div>
+
+            <!-- Biopsy outcome -->
+            <div class="outcome hidden" id="biopsy">
+                <h3>Correct!</h3>
+                <p>Biopsy shows spindle cells, vascular slits, and HHV-8 positivity. This confirms Kaposi's Sarcoma.</p>
+                <p><strong>Indian Context:</strong> Kaposi's Sarcoma is seen in 10-15% of Indian HIV patients, often oral involvement.</p>
+            </div>
+
+            <!-- CD4 outcome -->
+            <div class="outcome hidden incorrect" id="cd4">
+                <h3>Incorrect</h3>
+                <p>While low CD4 count supports HIV diagnosis, biopsy is essential for confirming Kaposi's Sarcoma.</p>
+            </div>
+
+            <!-- Treat outcome -->
+            <div class="outcome hidden incorrect" id="treat">
+                <h3>Incorrect</h3>
+                <p>ART is important but diagnosis must be confirmed first. Kaposi's Sarcoma requires specific treatment.</p>
+            </div>
+
+            <!-- Bacillary Angiomatosis branch -->
+            <div class="node hidden" id="bacillary">
+                How would you differentiate from Kaposi's Sarcoma?
+            </div>
+            <div class="option hidden" data-parent="bacillary" data-next="stain">Warthin-Starry stain</div>
+            <div class="option hidden" data-parent="bacillary" data-next="culture">Blood culture</div>
+            <div class="option hidden" data-parent="bacillary" data-next="clinical">Clinical appearance only</div>
+
+            <!-- Stain outcome -->
+            <div class="outcome hidden incorrect" id="stain">
+                <h3>Incorrect</h3>
+                <p>Warthin-Starry stain is for Bartonella, but this case shows classic Kaposi's Sarcoma features.</p>
+            </div>
+
+            <!-- Culture outcome -->
+            <div class="outcome hidden incorrect" id="culture">
+                <h3>Incorrect</h3>
+                <p>Blood culture may be negative. The lesions are more consistent with Kaposi's Sarcoma.</p>
+            </div>
+
+            <!-- Clinical outcome -->
+            <div class="outcome hidden incorrect" id="clinical">
+                <h3>Incorrect</h3>
+                <p>Clinical differentiation is difficult. Biopsy is needed for definitive diagnosis.</p>
+            </div>
+
+            <!-- Drug branch -->
+            <div class="node hidden" id="drug">
+                What drug history would support this?
+            </div>
+            <div class="option hidden" data-parent="drug" data-next="none">No drug history</div>
+            <div class="option hidden" data-parent="drug" data-next="abacavir">Recent abacavir initiation</div>
+            <div class="option hidden" data-parent="drug" data-next="nevirapine">Recent nevirapine start</div>
+
+            <!-- None outcome -->
+            <div class="outcome hidden correct" id="none">
+                <h3>Correct!</h3>
+                <p>No drug history reported. The lesions are more consistent with Kaposi's Sarcoma than drug rash.</p>
+            </div>
+
+            <!-- Abacavir outcome -->
+            <div class="outcome hidden incorrect" id="abacavir">
+                <h3>Incorrect</h3>
+                <p>Abacavir hypersensitivity is usually earlier and more widespread, not localized purple patches.</p>
+            </div>
+
+            <!-- Nevirapine outcome -->
+            <div class="outcome hidden incorrect" id="nevirapine">
+                <h3>Incorrect</h3>
+                <p>Nevirapine rash is usually morbilliform, not violaceous plaques.</p>
+            </div>
+
+            <!-- Vascular branch -->
+            <div class="node hidden" id="vascular">
+                What features suggest vascular malformation?
+            </div>
+            <div class="option hidden" data-parent="vascular" data-next="congenital">Present since birth</div>
+            <div class="option hidden" data-parent="vascular" data-next="bleed">Bleeding on trauma</div>
+            <div class="option hidden" data-parent="vascular" data-next="pulse">Pulsatile</div>
+
+            <!-- Congenital outcome -->
+            <div class="outcome hidden incorrect" id="congenital">
+                <h3>Incorrect</h3>
+                <p>Patient is 28, lesions are recent. Vascular malformations are usually congenital.</p>
+            </div>
+
+            <!-- Bleed outcome -->
+            <div class="outcome hidden incorrect" id="bleed">
+                <h3>Incorrect</h3>
+                <p>While possible, the violaceous color and oral involvement suggest Kaposi's Sarcoma.</p>
+            </div>
+
+            <!-- Pulse outcome -->
+            <div class="outcome hidden incorrect" id="pulse">
+                <h3>Incorrect</h3>
+                <p>Vascular malformations may be pulsatile, but these lesions are not described as such.</p>
+            </div>
+        </div>
+
+        <button class="reset-btn" onclick="resetTree()">Reset Decision Tree</button>
+    </div>
+
+    <script>
+        let currentNode = 'initial';
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const nextNode = this.getAttribute('data-next');
+                showNode(nextNode);
+                this.classList.add('selected');
+            });
+        });
+
+        function showNode(nodeId) {
+            // Hide all nodes and options
+            document.querySelectorAll('.node, .option, .outcome').forEach(el => {
+                el.classList.add('hidden');
+            });
+
+            // Show the target node
+            const targetNode = document.getElementById(nodeId);
+            targetNode.classList.remove('hidden');
+
+            // If it's an outcome, show it
+            if (targetNode.classList.contains('outcome')) {
+                targetNode.classList.remove('hidden');
+            } else {
+                // Show options for this node
+                document.querySelectorAll(`.option[data-parent="${nodeId}"]`).forEach(option => {
+                    option.classList.remove('hidden');
+                });
+            }
+        }
+
+        function resetTree() {
+            // Hide all except initial
+            document.querySelectorAll('.node, .option, .outcome').forEach(el => {
+                el.classList.add('hidden');
+            });
+
+            // Remove selected class
+            document.querySelectorAll('.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // Show initial node and its options
+            document.getElementById('initial').classList.remove('hidden');
+            document.querySelectorAll('.option[data-parent="initial"]').forEach(option => {
+                option.classList.remove('hidden');
+            });
+        }
+    </script>
+</body>
+</html>

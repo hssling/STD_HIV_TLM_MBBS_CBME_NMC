@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIV Dermatology Role-Playing Scenario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .scenario-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #4ecdc4;
+            padding-bottom: 20px;
+        }
+        .scenario-setup {
+            background-color: #e8f4fd;
+            border: 2px solid #4ecdc4;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .character-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .character-card {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .character-card:hover {
+            background-color: #e9ecef;
+            border-color: #4ecdc4;
+            transform: translateY(-2px);
+        }
+        .character-card.selected {
+            background-color: #4ecdc4;
+            color: white;
+            border-color: #26a69a;
+        }
+        .character-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .dialogue-section {
+            margin-bottom: 30px;
+        }
+        .dialogue-box {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #4ecdc4;
+        }
+        .speaker {
+            font-weight: bold;
+            color: #2d3436;
+            margin-bottom: 10px;
+        }
+        .dialogue-text {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .response-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .response-btn {
+            background-color: #e9ecef;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+        .response-btn:hover {
+            background-color: #dee2e6;
+            border-color: #4ecdc4;
+        }
+        .response-btn.selected {
+            background-color: #4ecdc4;
+            color: white;
+            border-color: #26a69a;
+        }
+        .feedback-section {
+            background-color: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        .score-display {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            display: none;
+        }
+        .next-scenario-btn {
+            background-color: #74b9ff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: none;
+            margin: 20px auto;
+        }
+        .submit-response-btn {
+            background-color: #4ecdc4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px auto;
+            display: block;
+        }
+        .submit-response-btn:hover {
+            background-color: #26a69a;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #4ecdc4;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        h2 {
+            color: #2d3436;
+            border-bottom: 2px solid #4ecdc4;
+            padding-bottom: 10px;
+        }
+        .scenario-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3436;
+        }
+        .learning-objectives {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .objectives-list {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="scenario-container">
+        <div class="header">
+            <h1>🎭 HIV Dermatology Role-Playing Scenarios</h1>
+            <p>Practice communication skills in HIV dermatology consultations</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+
+        <div class="scenario-setup" id="scenario-setup">
+            <div class="scenario-title" id="scenario-title"></div>
+            <div class="learning-objectives">
+                <strong>Learning Objectives:</strong>
+                <ul class="objectives-list" id="objectives-list"></ul>
+            </div>
+        </div>
+
+        <div class="character-selection" id="character-selection">
+            <div class="character-card" data-character="doctor">
+                <div class="character-icon">👨‍⚕️</div>
+                <h3>Dermatologist</h3>
+                <p>You are the consulting dermatologist managing HIV patients</p>
+            </div>
+            <div class="character-card" data-character="patient">
+                <div class="character-icon">👤</div>
+                <h3>Patient</h3>
+                <p>You are the HIV patient seeking dermatological care</p>
+            </div>
+        </div>
+
+        <div class="dialogue-section" id="dialogue-section" style="display: none;">
+            <h2>Role-Play Dialogue</h2>
+            <div id="dialogue-container"></div>
+
+            <div class="response-options" id="response-options"></div>
+        </div>
+
+        <button class="submit-response-btn" id="submit-response-btn" style="display: none;">Submit Response</button>
+
+        <div class="feedback-section" id="feedback-section">
+            <h3>Scenario Feedback</h3>
+            <div id="feedback-content"></div>
+        </div>
+
+        <div class="score-display" id="score-display">
+            Scenario Score: <span id="scenario-score"></span>/100
+        </div>
+
+        <button class="next-scenario-btn" id="next-scenario-btn">Next Scenario</button>
+    </div>
+
+    <script>
+        const scenarios = [
+            {
+                title: "Breaking Bad News: Kaposi's Sarcoma Diagnosis",
+                objectives: [
+                    "Practice empathetic communication when delivering serious diagnosis",
+                    "Address patient concerns about prognosis and treatment",
+                    "Discuss treatment options and ART optimization",
+                    "Handle emotional responses appropriately"
+                ],
+                dialogues: [
+                    {
+                        speaker: "Patient",
+                        text: "Doctor, I came because of these purple spots in my mouth. I've been worried sick. Is it something serious?",
+                        responses: [
+                            "Let me examine you first and then we'll discuss the findings.",
+                            "Yes, these lesions suggest Kaposi's sarcoma, which is related to your HIV.",
+                            "Don't worry, it's probably nothing serious. Let's check your CD4 count.",
+                            "These are common in HIV patients and easily treatable."
+                        ],
+                        correctResponse: 0,
+                        feedback: "Good approach! Always examine first before discussing diagnosis. This builds trust and ensures accurate assessment."
+                    },
+                    {
+                        speaker: "Patient",
+                        text: "What does this mean for my health? Am I going to die?",
+                        responses: [
+                            "Kaposi's sarcoma is treatable, especially with proper ART and chemotherapy. Your prognosis depends on your CD4 count and treatment response.",
+                            "This is very serious. You need to prepare for the worst.",
+                            "Don't worry about it now. Focus on taking your medications.",
+                            "Most patients with this condition live normal lifespans with treatment."
+                        ],
+                        correctResponse: 0,
+                        feedback: "Excellent! You provided honest but hopeful information, addressed prognosis realistically, and emphasized treatment options."
+                    },
+                    {
+                        speaker: "Patient",
+                        text: "What treatment options do I have? I'm scared of chemotherapy.",
+                        responses: [
+                            "Treatment combines ART optimization and chemotherapy like liposomal doxorubicin. We'll discuss side effects and monitor your response closely.",
+                            "You don't need chemotherapy. Just continue your current ART.",
+                            "Chemotherapy is the only option. You have to accept it.",
+                            "Let's wait and see if the lesions improve on their own."
+                        ],
+                        correctResponse: 0,
+                        feedback: "Perfect! You explained treatment options comprehensively, addressed fears about chemotherapy, and emphasized monitoring and support."
+                    }
+                ]
+            },
+            {
+                title: "Managing Stigma: Pruritic Papular Eruption Misdiagnosis",
+                objectives: [
+                    "Address misconceptions about HIV dermatological conditions",
+                    "Educate patients about PPE vs common infections",
+                    "Handle stigma-related concerns sensitively",
+                    "Promote adherence to ART and dermatological treatment"
+                ],
+                dialogues: [
+                    {
+                        speaker: "Patient",
+                        text: "Doctor, the previous doctor said I have scabies and gave me some cream. But it's not helping. People are avoiding me because they think I have a contagious disease.",
+                        responses: [
+                            "Let me examine your lesions. PPE can look like scabies but is different. It's related to your HIV status and not contagious.",
+                            "You probably do have scabies. Keep using the cream.",
+                            "People are right to avoid you. This could be contagious.",
+                            "Don't worry about what others think. Just take your ART regularly."
+                        ],
+                        correctResponse: 0,
+                        feedback: "Excellent! You addressed the misdiagnosis, explained the condition clearly, and reassured about non-contagious nature."
+                    },
+                    {
+                        speaker: "Patient",
+                        text: "Why do I keep getting these skin problems? Is my HIV getting worse?",
+                        responses: [
+                            "PPE occurs with low CD4 counts and improves with ART. Your skin condition is a sign we need to optimize your treatment.",
+                            "This is normal for HIV patients. Just live with it.",
+                            "Your HIV is definitely getting worse. You need stronger medications.",
+                            "Skin problems are unrelated to HIV. You should see a different doctor."
+                        ],
+                        correctResponse: 0,
+                        feedback: "Good! You explained the relationship between CD4 count and PPE, reassured about treatability, and linked it to treatment optimization."
+                    },
+                    {
+                        speaker: "Patient",
+                        text: "My family is worried I'll infect them. How can I explain this to them?",
+                        responses: [
+                            "PPE is not contagious. You can reassure your family that it's related to HIV immunosuppression, not infection. Good hygiene and ART adherence help.",
+                            "Tell them to stay away from you until it clears up.",
+                            "Your family should get tested for HIV immediately.",
+                            "This is highly contagious. Keep your distance from family."
+                        ],
+                        correctResponse: 0,
+                        feedback: "Perfect! You addressed stigma concerns, provided accurate information about non-contagious nature, and gave practical advice for family communication."
+                    }
+                ]
+            },
+            {
+                title: "Cultural Sensitivity: Traditional Medicine vs Modern Treatment",
+                objectives: [
+                    "Respect cultural beliefs while promoting evidence-based treatment",
+                    "Discuss integration of traditional and modern medicine",
+                    "Address concerns about treatment side effects",
+                    "Build trust through culturally sensitive communication"
+                ],
+                dialogues: [
+                    {
+                        speaker: "Patient",
+                        text: "Doctor, I've been using Ayurvedic medicines for my skin rash. My family says modern medicine is harmful. What should I do?",
+                        responses: [
+                            "Ayurvedic medicines can complement but not replace ART and dermatological treatment. Let's discuss how to integrate both safely.",
+                            "Stop all traditional medicines immediately. Only modern medicine works.",
+                            "Traditional medicine is better for HIV patients. Continue what you're doing.",
+                            "Your family is right. Modern medicine can be dangerous."
+                        ],
+                        correctResponse: 0,
+                        feedback: "Excellent approach! You respected cultural beliefs while emphasizing the importance of evidence-based treatment and offered integration."
+                    },
+                    {
+                        speaker: "Patient",
+                        text: "The creams you gave me are making my skin burn. Can I use coconut oil instead?",
+                        responses: [
+                            "Coconut oil can be used as moisturizer alongside prescribed treatment. But continue the antifungal cream as prescribed for the infection.",
+                            "Stop the cream immediately. Only use coconut oil.",
+                            "The burning means the treatment is working. Keep using it.",
+                            "Modern creams are harmful. Switch to traditional remedies completely."
+                        ],
+                        correctResponse: 0,
+                        feedback: "Good! You acknowledged the side effect, allowed safe traditional remedies as adjunct, but maintained evidence-based treatment."
+                    },
+                    {
+                        speaker: "Patient",
+                        text: "My spiritual healer says my skin condition is due to past sins. Should I continue spiritual treatment?",
+                        responses: [
+                            "Spiritual healing can provide emotional support. Continue if it helps you cope, but combine it with medical treatment for best results.",
+                            "Spiritual healing is superstition. Focus only on medical treatment.",
+                            "You're right. Stop medical treatment and focus on spiritual healing.",
+                            "Past sins don't cause medical conditions. You need psychological help."
+                        ],
+                        correctResponse: 0,
+                        feedback: "Perfect! You respected spiritual beliefs, provided emotional support, and encouraged integrated approach without dismissing beliefs."
+                    }
+                ]
+            }
+        ];
+
+        let currentScenarioIndex = 0;
+        let currentDialogueIndex = 0;
+        let selectedCharacter = null;
+        let selectedResponse = null;
+        let score = 0;
+
+        function loadScenario() {
+            const scenario = scenarios[currentScenarioIndex];
+            document.getElementById('scenario-title').textContent = scenario.title;
+
+            const objectivesList = document.getElementById('objectives-list');
+            objectivesList.innerHTML = '';
+            scenario.objectives.forEach(objective => {
+                const li = document.createElement('li');
+                li.textContent = objective;
+                objectivesList.appendChild(li);
+            });
+
+            document.getElementById('character-selection').style.display = 'grid';
+            document.getElementById('dialogue-section').style.display = 'none';
+            document.getElementById('submit-response-btn').style.display = 'none';
+            document.getElementById('feedback-section').style.display = 'none';
+            document.getElementById('score-display').style.display = 'none';
+            document.getElementById('next-scenario-btn').style.display = 'none';
+
+            selectedCharacter = null;
+            currentDialogueIndex = 0;
+            updateProgress();
+        }
+
+        function selectCharacter(character) {
+            selectedCharacter = character;
+            document.querySelectorAll('.character-card').forEach(card => card.classList.remove('selected'));
+            document.querySelector(`[data-character="${character}"]`).classList.add('selected');
+
+            setTimeout(() => {
+                document.getElementById('character-selection').style.display = 'none';
+                document.getElementById('dialogue-section').style.display = 'block';
+                loadDialogue();
+            }, 500);
+        }
+
+        function loadDialogue() {
+            const scenario = scenarios[currentScenarioIndex];
+            const dialogue = scenario.dialogues[currentDialogueIndex];
+
+            const dialogueContainer = document.getElementById('dialogue-container');
+            dialogueContainer.innerHTML = `
+                <div class="dialogue-box">
+                    <div class="speaker">${dialogue.speaker}:</div>
+                    <div class="dialogue-text">${dialogue.text}</div>
+                </div>
+            `;
+
+            const responseOptions = document.getElementById('response-options');
+            responseOptions.innerHTML = '';
+
+            dialogue.responses.forEach((response, index) => {
+                const responseBtn = document.createElement('div');
+                responseBtn.className = 'response-btn';
+                responseBtn.textContent = response;
+                responseBtn.addEventListener('click', () => selectResponse(index, responseBtn));
+                responseOptions.appendChild(responseBtn);
+            });
+
+            document.getElementById('submit-response-btn').style.display = 'block';
+            selectedResponse = null;
+        }
+
+        function selectResponse(index, element) {
+            document.querySelectorAll('.response-btn').forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedResponse = index;
+        }
+
+        function submitResponse() {
+            if (selectedResponse === null) {
+                alert('Please select a response.');
+                return;
+            }
+
+            const scenario = scenarios[currentScenarioIndex];
+            const dialogue = scenario.dialogues[currentDialogueIndex];
+            let dialogueScore = 0;
+
+            if (selectedResponse === dialogue.correctResponse) {
+                dialogueScore = 100;
+            }
+
+            score += dialogueScore;
+
+            const feedbackContent = document.getElementById('feedback-content');
+            feedbackContent.innerHTML = `
+                <p><strong>Response Score: ${dialogueScore}/100</strong></p>
+                <p><strong>Feedback:</strong></p>
+                <p>${dialogue.feedback}</p>
+                <p><strong>Correct Approach:</strong></p>
+                <p>"${dialogue.responses[dialogue.correctResponse]}"</p>
+            `;
+
+            document.getElementById('feedback-section').style.display = 'block';
+            document.getElementById('submit-response-btn').style.display = 'none';
+            document.getElementById('score-display').style.display = 'block';
+            document.getElementById('scenario-score').textContent = dialogueScore;
+
+            currentDialogueIndex++;
+            if (currentDialogueIndex < scenario.dialogues.length) {
+                document.getElementById('next-scenario-btn').textContent = 'Next Dialogue';
+                document.getElementById('next-scenario-btn').style.display = 'block';
+            } else if (currentScenarioIndex < scenarios.length - 1) {
+                document.getElementById('next-scenario-btn').textContent = 'Next Scenario';
+                document.getElementById('next-scenario-btn').style.display = 'block';
+            }
+        }
+
+        function nextScenario() {
+            if (currentDialogueIndex < scenarios[currentScenarioIndex].dialogues.length) {
+                // Next dialogue in same scenario
+                document.getElementById('feedback-section').style.display = 'none';
+                document.getElementById('score-display').style.display = 'none';
+                document.getElementById('next-scenario-btn').style.display = 'none';
+                loadDialogue();
+            } else {
+                // Next scenario
+                currentScenarioIndex++;
+                currentDialogueIndex = 0;
+                document.getElementById('feedback-section').style.display = 'none';
+                document.getElementById('score-display').style.display = 'none';
+                document.getElementById('next-scenario-btn').style.display = 'none';
+                loadScenario();
+            }
+        }
+
+        function updateProgress() {
+            const totalDialogues = scenarios.reduce((sum, scenario) => sum + scenario.dialogues.length, 0);
+            const completedDialogues = scenarios.slice(0, currentScenarioIndex).reduce((sum, scenario) => sum + scenario.dialogues.length, 0) + currentDialogueIndex;
+            const progress = (completedDialogues / totalDialogues) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+        }
+
+        document.querySelectorAll('.character-card').forEach(card => {
+            card.addEventListener('click', () => selectCharacter(card.dataset.character));
+        });
+
+        document.getElementById('submit-response-btn').addEventListener('click', submitResponse);
+        document.getElementById('next-scenario-btn').addEventListener('click', nextScenario);
+
+        loadScenario();
+    </script>
+</body>
+</html>

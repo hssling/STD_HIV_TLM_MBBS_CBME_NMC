@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STD Prevention Strategy Game - Gamified Learning</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        .game-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .prevention-pyramid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .pyramid-level {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .strategy-card {
+            background-color: #e8f4fd;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            text-align: center;
+        }
+        .strategy-card:hover {
+            background-color: #bbdefb;
+            transform: scale(1.05);
+        }
+        .strategy-card.selected {
+            background-color: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+        .score-panel {
+            background-color: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .feedback-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e8;
+            border-left: 4px solid #4caf50;
+            display: none;
+        }
+        .feedback-panel.show {
+            display: block;
+        }
+        .next-btn {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .next-btn:hover {
+            background-color: #1976d2;
+        }
+        .level-indicator {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>STD Prevention Strategy Game</h1>
+    <p>Build a comprehensive prevention pyramid by selecting the most effective strategies at each level. Earn points for optimal choices!</p>
+
+    <div class="game-container">
+        <div class="score-panel">
+            <h3>Score: <span id="score">0</span>/100</h3>
+            <p>Level: <span id="level">Foundation</span></p>
+        </div>
+
+        <div class="prevention-pyramid" id="pyramid">
+            <!-- Pyramid levels will be dynamically generated -->
+        </div>
+
+        <div class="feedback-panel" id="feedback">
+            <h3>Feedback</h3>
+            <p id="feedback-text"></p>
+            <button class="next-btn" id="next-btn" onclick="nextLevel()">Next Level</button>
+        </div>
+    </div>
+
+    <script>
+        let currentLevel = 0;
+        let score = 0;
+        let selectedStrategies = [];
+
+        const levels = [
+            {
+                name: "Foundation - Individual Level",
+                strategies: [
+                    { id: "condoms", text: "Condom Use", points: 20, feedback: "Correct! Consistent condom use reduces STD transmission by 80-90%." },
+                    { id: "abstinence", text: "Abstinence", points: 15, feedback: "Good choice! Complete abstinence eliminates sexual transmission risk." },
+                    { id: "monogamy", text: "Mutual Monogamy", points: 10, feedback: "Important! Testing before monogamy is crucial." },
+                    { id: "vaccines", text: "Vaccinations (HPV/HBV)", points: 25, feedback: "Excellent! Vaccines prevent HPV and HBV infections." }
+                ],
+                required: 2
+            },
+            {
+                name: "Community Level - Education & Awareness",
+                strategies: [
+                    { id: "iec", text: "IEC Campaigns", points: 20, feedback: "Key strategy! NACO's IEC programs reach millions annually." },
+                    { id: "school", text: "School Education", points: 15, feedback: "Essential! Early education shapes behavior." },
+                    { id: "media", text: "Media Campaigns", points: 10, feedback: "Effective! Social media reaches youth effectively." },
+                    { id: "peer", text: "Peer Education", points: 25, feedback: "Powerful! Peers influence behavior change." }
+                ],
+                required: 2
+            },
+            {
+                name: "Health System Level - Services & Programs",
+                strategies: [
+                    { id: "sti_clinics", text: "STI Clinics", points: 20, feedback: "Critical! Free testing and treatment available nationwide." },
+                    { id: "hiv_testing", text: "HIV Testing Centers", points: 15, feedback: "Important! Early detection prevents transmission." },
+                    { id: "art", text: "ART Centers", points: 25, feedback: "Vital! U=U prevents transmission." },
+                    { id: "screening", text: "Partner Screening", points: 10, feedback: "Necessary! Contact tracing breaks transmission chains." }
+                ],
+                required: 2
+            },
+            {
+                name: "Policy Level - National Programs",
+                strategies: [
+                    { id: "naco", text: "NACO Programs", points: 25, feedback: "Excellent! Comprehensive HIV/AIDS control program." },
+                    { id: "nvbdcp", text: "NVBDCP Integration", points: 20, feedback: "Good! Integrated STD control approach." },
+                    { id: "ppp", text: "Public-Private Partnership", points: 15, feedback: "Important! Leverages private sector resources." },
+                    { id: "surveillance", text: "Epidemiological Surveillance", points: 10, feedback: "Essential! Data-driven interventions." }
+                ],
+                required: 2
+            }
+        ];
+
+        function initGame() {
+            renderLevel();
+        }
+
+        function renderLevel() {
+            const pyramid = document.getElementById('pyramid');
+            pyramid.innerHTML = '';
+
+            const level = levels[currentLevel];
+            document.getElementById('level').textContent = level.name;
+
+            const levelDiv = document.createElement('div');
+            levelDiv.className = 'pyramid-level';
+
+            level.strategies.forEach(strategy => {
+                const card = document.createElement('div');
+                card.className = 'strategy-card';
+                card.id = strategy.id;
+                card.textContent = strategy.text;
+                card.onclick = () => selectStrategy(strategy);
+                levelDiv.appendChild(card);
+            });
+
+            pyramid.appendChild(levelDiv);
+        }
+
+        function selectStrategy(strategy) {
+            const card = document.getElementById(strategy.id);
+            if (card.classList.contains('selected')) {
+                card.classList.remove('selected');
+                selectedStrategies = selectedStrategies.filter(s => s.id !== strategy.id);
+            } else {
+                card.classList.add('selected');
+                selectedStrategies.push(strategy);
+            }
+
+            if (selectedStrategies.length >= levels[currentLevel].required) {
+                showFeedback();
+            }
+        }
+
+        function showFeedback() {
+            let totalPoints = 0;
+            let feedbackText = '';
+
+            selectedStrategies.forEach(strategy => {
+                totalPoints += strategy.points;
+                feedbackText += strategy.feedback + ' ';
+            });
+
+            score += totalPoints;
+            document.getElementById('score').textContent = score;
+
+            document.getElementById('feedback-text').textContent = feedbackText;
+            document.getElementById('feedback').classList.add('show');
+        }
+
+        function nextLevel() {
+            currentLevel++;
+            selectedStrategies = [];
+            document.getElementById('feedback').classList.remove('show');
+
+            if (currentLevel < levels.length) {
+                renderLevel();
+            } else {
+                showFinalScore();
+            }
+        }
+
+        function showFinalScore() {
+            const pyramid = document.getElementById('pyramid');
+            pyramid.innerHTML = '<h2>Game Complete!</h2><p>Final Score: ' + score + '/100</p>';
+
+            let message = '';
+            if (score >= 80) {
+                message = 'Excellent! You have a comprehensive understanding of STD prevention strategies in India.';
+            } else if (score >= 60) {
+                message = 'Good job! Review the strategies to strengthen your prevention approach.';
+            } else {
+                message = 'Keep learning! STD prevention requires multi-level interventions.';
+            }
+
+            pyramid.innerHTML += '<p>' + message + '</p>';
+        }
+
+        initGame();
+    </script>
+</body>
+</html>

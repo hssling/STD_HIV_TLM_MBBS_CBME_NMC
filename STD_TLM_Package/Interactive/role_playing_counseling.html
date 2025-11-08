@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role-Playing Counseling Scenario - STD Education</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        .counseling-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .scenario-setup {
+            background-color: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .dialogue-box {
+            display: flex;
+            margin: 15px 0;
+            align-items: flex-start;
+        }
+        .character-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+        .patient-avatar {
+            background-color: #ff9800;
+            color: white;
+        }
+        .doctor-avatar {
+            background-color: #2196f3;
+            color: white;
+        }
+        .dialogue-text {
+            flex: 1;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+        .response-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .response-card {
+            background-color: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .response-card:hover {
+            background-color: #ffe0b2;
+            transform: translateY(-2px);
+        }
+        .response-card.selected {
+            background-color: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+        .feedback-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e8;
+            border-left: 4px solid #4caf50;
+            display: none;
+        }
+        .feedback-panel.show {
+            display: block;
+        }
+        .feedback-panel.incorrect {
+            background-color: #ffebee;
+            border-left-color: #f44336;
+        }
+        .next-btn {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .next-btn:hover {
+            background-color: #1976d2;
+        }
+        .progress-indicator {
+            text-align: center;
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+        .score-display {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Role-Playing Counseling Scenario</h1>
+    <p>Practice counseling skills with realistic patient interactions. Choose appropriate responses following ethical guidelines and Indian cultural context.</p>
+
+    <div class="counseling-container">
+        <div class="progress-indicator">Scenario: <span id="scenario-number">1</span>/4</div>
+        <div class="score-display">Empathy Score: <span id="empathy-score">0</span>/100</div>
+
+        <div class="scenario-setup" id="scenario-setup">
+            <h3>Scenario Setup</h3>
+            <p id="setup-text">Loading scenario...</p>
+        </div>
+
+        <div id="dialogue-history">
+            <!-- Dialogue will be dynamically added -->
+        </div>
+
+        <div class="response-options" id="response-options">
+            <!-- Response options will be dynamically generated -->
+        </div>
+
+        <div class="feedback-panel" id="feedback-panel">
+            <h3>Feedback</h3>
+            <p id="feedback-text"></p>
+            <p id="learning-point"></p>
+            <button class="next-btn" id="next-btn" onclick="nextDialogue()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        let currentScenario = 0;
+        let currentDialogue = 0;
+        let empathyScore = 0;
+
+        const scenarios = [
+            {
+                setup: "You are a community physician in a rural Indian clinic. A 22-year-old unmarried woman comes for contraception advice. She seems nervous and avoids eye contact.",
+                dialogues: [
+                    {
+                        speaker: "patient",
+                        text: "Doctor, I need some... family planning advice. I'm not married but I have a boyfriend."
+                    },
+                    {
+                        speaker: "patient",
+                        text: "I'm worried about getting pregnant. What should I do?"
+                    },
+                    {
+                        speaker: "patient",
+                        text: "My family doesn't know about my relationship. They would be very upset."
+                    },
+                    {
+                        speaker: "patient",
+                        text: "I've heard about condoms, but I'm not sure how to use them properly."
+                    }
+                ],
+                responses: [
+                    [
+                        {
+                            text: "I understand this is a sensitive topic. Your privacy is protected here. Let's discuss your options confidentially.",
+                            empathy: 20,
+                            correct: true,
+                            feedback: "Excellent! Building trust and ensuring confidentiality is crucial in Indian cultural context.",
+                            learning: "Confidentiality builds trust, especially for unmarried women seeking reproductive health services."
+                        },
+                        {
+                            text: "You should get married first. Premarital sex is wrong.",
+                            empathy: -20,
+                            correct: false,
+                            feedback: "Judgmental approach! This violates patient autonomy and may prevent her from seeking care.",
+                            learning: "Healthcare providers must remain non-judgmental regardless of personal beliefs."
+                        },
+                        {
+                            text: "Tell your parents about your relationship. They need to know.",
+                            empathy: -15,
+                            correct: false,
+                            feedback: "Inappropriate! This could put her at risk of family violence or forced marriage.",
+                            learning: "Respect patient confidentiality and avoid involving family without consent."
+                        },
+                        {
+                            text: "Just don't have sex. That's the best prevention.",
+                            empathy: -10,
+                            correct: false,
+                            feedback: "Unrealistic advice! Abstinence-only counseling is ineffective for sexually active individuals.",
+                            learning: "Provide comprehensive options, not just abstinence."
+                        }
+                    ],
+                    [
+                        {
+                            text: "There are many effective methods available. Condoms are good, but let's discuss what works best for you.",
+                            empathy: 15,
+                            correct: true,
+                            feedback: "Good! Offering choices empowers the patient to make informed decisions.",
+                            learning: "Patient-centered counseling involves discussing multiple options."
+                        },
+                        {
+                            text: "Use condoms every time. That's all you need to know.",
+                            empathy: -5,
+                            correct: false,
+                            feedback: "Incomplete! She needs education on proper use and alternatives.",
+                            learning: "Counseling should include demonstration and discussion of side effects."
+                        },
+                        {
+                            text: "Get an IUD. It's the most effective method.",
+                            empathy: 0,
+                            correct: false,
+                            feedback: "Prescriptive! Not considering her preferences or situation.",
+                            learning: "Counseling should be tailored to individual circumstances."
+                        },
+                        {
+                            text: "Emergency contraception is your only option now.",
+                            empathy: -10,
+                            correct: false,
+                            feedback: "Wrong! She asked for prevention, not emergency measures.",
+                            learning: "Address the actual question asked by the patient."
+                        }
+                    ],
+                    [
+                        {
+                            text: "I respect your privacy. We can discuss this without involving your family. Your health comes first.",
+                            empathy: 20,
+                            correct: true,
+                            feedback: "Perfect! Acknowledging cultural pressures while prioritizing patient welfare.",
+                            learning: "Balance cultural sensitivity with patient rights and safety."
+                        },
+                        {
+                            text: "You must tell your parents eventually. Secrets are bad.",
+                            empathy: -20,
+                            correct: false,
+                            feedback: "Harmful advice! Could lead to domestic violence or honor-based issues.",
+                            learning: "Never pressure patients to disclose information that could endanger them."
+                        },
+                        {
+                            text: "In India, family approval is important for these decisions.",
+                            empathy: -10,
+                            correct: false,
+                            feedback: "Cultural imposition! Individual autonomy supersedes cultural norms in healthcare.",
+                            learning: "Respect individual rights over traditional expectations."
+                        },
+                        {
+                            text: "Let's call your mother to discuss this together.",
+                            empathy: -25,
+                            correct: false,
+                            feedback: "Major breach! Violates confidentiality and patient autonomy.",
+                            learning: "Never involve family members without explicit patient consent."
+                        }
+                    ],
+                    [
+                        {
+                            text: "Let me show you how to use a condom properly. Practice makes perfect.",
+                            empathy: 15,
+                            correct: true,
+                            feedback: "Excellent! Hands-on education improves effectiveness and builds confidence.",
+                            learning: "Demonstration and practice are essential for condom education."
+                        },
+                        {
+                            text: "Read the instructions on the package. It's self-explanatory.",
+                            empathy: -10,
+                            correct: false,
+                            feedback: "Inadequate! Many people need guidance, especially first-time users.",
+                            learning: "Don't assume prior knowledge; provide comprehensive education."
+                        },
+                        {
+                            text: "Your boyfriend should know how to use them. Ask him.",
+                            empathy: -5,
+                            correct: false,
+                            feedback: "Avoiding responsibility! Healthcare providers should educate patients directly.",
+                            learning: "Take ownership of patient education rather than delegating."
+                        },
+                        {
+                            text: "Condoms are unreliable. Use something else.",
+                            empathy: -15,
+                            correct: false,
+                            feedback: "Misinformation! Condoms are highly effective when used correctly.",
+                            learning: "Provide accurate information based on evidence, not personal bias."
+                        }
+                    ]
+                ]
+            },
+            {
+                setup: "A 35-year-old married man comes for STI testing. He admits to extramarital affairs and is worried about infecting his wife. He seems ashamed and anxious.",
+                dialogues: [
+                    {
+                        speaker: "patient",
+                        text: "Doctor, I think I might have an STD. I've been unfaithful to my wife."
+                    },
+                    {
+                        speaker: "patient",
+                        text: "I'm scared to tell her. What if she leaves me?"
+                    },
+                    {
+                        speaker: "patient",
+                        text: "Should I get tested first before telling anyone?"
+                    },
+                    {
+                        speaker: "patient",
+                        text: "What if the test is positive? How will I face my family?"
+                    }
+                ],
+                responses: [
+                    [
+                        {
+                            text: "I understand this is difficult. Many people face similar situations. Let's focus on your health first.",
+                            empathy: 20,
+                            correct: true,
+                            feedback: "Compassionate! Reduces shame and focuses on medical care.",
+                            learning: "Non-judgmental approach reduces barriers to testing and treatment."
+                        },
+                        {
+                            text: "How could you do this to your wife? You should be ashamed.",
+                            empathy: -25,
+                            correct: false,
+                            feedback: "Judgmental! This will prevent him from seeking care and may drive him away.",
+                            learning: "Judgment destroys trust and prevents effective healthcare delivery."
+                        },
+                        {
+                            text: "You need to confess everything to your wife immediately.",
+                            empathy: -10,
+                            correct: false,
+                            feedback: "Pressure! Partner notification should be guided by medical and legal considerations.",
+                            learning: "Partner notification requires careful counseling and sometimes legal involvement."
+                        },
+                        {
+                            text: "This is common in men. Don't worry about it.",
+                            empathy: -5,
+                            correct: false,
+                            feedback: "Dismissive! Minimizes his concerns and the seriousness of STIs.",
+                            learning: "Take all patient concerns seriously, regardless of how common they seem."
+                        }
+                    ],
+                    [
+                        {
+                            text: "Your feelings are valid. We'll discuss partner notification after we know your status. Your safety comes first.",
+                            empathy: 20,
+                            correct: true,
+                            feedback: "Balanced approach! Addresses emotional concerns while planning next steps.",
+                            learning: "Counseling should address both medical and psychosocial aspects."
+                        },
+                        {
+                            text: "Tell her right now or I'll tell her myself.",
+                            empathy: -30,
+                            correct: false,
+                            feedback: "Threatening! Violates ethics and could be illegal.",
+                            learning: "Healthcare providers cannot disclose patient information without consent."
+                        },
+                        {
+                            text: "Don't tell her. Just get treated and forget about it.",
+                            empathy: -15,
+                            correct: false,
+                            feedback: "Irresponsible! Concealing STIs can lead to transmission and complications.",
+                            learning: "Partner notification is essential for public health and relationship safety."
+                        },
+                        {
+                            text: "This is your fault. You made your bed, now lie in it.",
+                            empathy: -20,
+                            correct: false,
+                            feedback: "Punitive! This approach destroys therapeutic alliance.",
+                            learning: "Empathy and support are essential for behavior change."
+                        }
+                    ],
+                    [
+                        {
+                            text: "Testing first is wise. It gives us concrete information to guide our discussion about next steps.",
+                            empathy: 15,
+                            correct: true,
+                            feedback: "Practical! Allows informed decision-making about disclosure.",
+                            learning: "Medical facts should guide counseling rather than assumptions."
+                        },
+                        {
+                            text: "No, you must tell her before testing. Honesty is important.",
+                            empathy: -10,
+                            correct: false,
+                            feedback: "Rigid! Doesn't consider the complexity of disclosure timing.",
+                            learning: "Counseling should be flexible and patient-centered."
+                        },
+                        {
+                            text: "Testing is unnecessary. Just use condoms from now on.",
+                            empathy: -15,
+                            correct: false,
+                            feedback: "Wrong! He needs evaluation for possible infection.",
+                            learning: "Don't dismiss symptoms or risk factors without proper assessment."
+                        },
+                        {
+                            text: "Get tested at home. No need to involve doctors.",
+                            empathy: -5,
+                            correct: false,
+                            feedback: "Inappropriate! Professional medical care is required for STIs.",
+                            learning: "Self-testing has limitations and requires professional interpretation."
+                        }
+                    ],
+                    [
+                        {
+                            text: "If positive, we'll discuss treatment options and partner management together. You're not alone in this.",
+                            empathy: 20,
+                            correct: true,
+                            feedback: "Supportive! Provides hope and outlines clear next steps.",
+                            learning: "Positive framing helps patients cope with difficult diagnoses."
+                        },
+                        {
+                            text: "You'll probably get divorced. Most marriages can't survive this.",
+                            empathy: -25,
+                            correct: false,
+                            feedback: "Defeatist! Undermines hope and may lead to denial of treatment.",
+                            learning: "Focus on solutions rather than predicting negative outcomes."
+                        },
+                        {
+                            text: "Your family will disown you. Better not to tell them.",
+                            empathy: -20,
+                            correct: false,
+                            feedback: "Alarmist! Increases anxiety without providing support.",
+                            learning: "Address fears but provide realistic perspective and support options."
+                        },
+                        {
+                            text: "Just leave your wife. Start fresh with someone else.",
+                            empathy: -30,
+                            correct: false,
+                            feedback: "Destructive advice! Promotes harmful behavior and family breakdown.",
+                            learning: "Counseling should promote healthy relationships and harm reduction."
+                        }
+                    ]
+                ]
+            }
+        ];
+
+        function initRolePlay() {
+            loadScenario();
+        }
+
+        function loadScenario() {
+            const scenario = scenarios[currentScenario];
+            document.getElementById('scenario-setup').querySelector('#setup-text').textContent = scenario.setup;
+            document.getElementById('scenario-number').textContent = currentScenario + 1;
+            currentDialogue = 0;
+            loadDialogue();
+        }
+
+        function loadDialogue() {
+            const scenario = scenarios[currentScenario];
+            const dialogueHistory = document.getElementById('dialogue-history');
+            dialogueHistory.innerHTML = '';
+
+            // Add previous dialogues
+            for (let i = 0; i <= currentDialogue; i++) {
+                addDialogueToHistory(scenario.dialogues[i]);
+            }
+
+            // Add response options
+            const responseOptions = document.getElementById('response-options');
+            responseOptions.innerHTML = '';
+
+            if (currentDialogue < scenario.responses.length) {
+                scenario.responses[currentDialogue].forEach((response, index) => {
+                    const responseCard = document.createElement('div');
+                    responseCard.className = 'response-card';
+                    responseCard.textContent = response.text;
+                    responseCard.onclick = () => selectResponse(index);
+                    responseOptions.appendChild(responseCard);
+                });
+            }
+        }
+
+        function addDialogueToHistory(dialogue) {
+            const dialogueHistory = document.getElementById('dialogue-history');
+            const dialogueBox = document.createElement('div');
+            dialogueBox.className = 'dialogue-box';
+
+            const avatar = document.createElement('div');
+            avatar.className = `character-avatar ${dialogue.speaker}-avatar`;
+            avatar.textContent = dialogue.speaker === 'patient' ? '👤' : '👨‍⚕️';
+
+            const text = document.createElement('div');
+            text.className = 'dialogue-text';
+            text.textContent = dialogue.text;
+
+            dialogueBox.appendChild(avatar);
+            dialogueBox.appendChild(text);
+            dialogueHistory.appendChild(dialogueBox);
+        }
+
+        function selectResponse(responseIndex) {
+            const scenario = scenarios[currentScenario];
+            const selectedResponse = scenario.responses[currentDialogue][responseIndex];
+
+            empathyScore += selectedResponse.empathy;
+            document.getElementById('empathy-score').textContent = Math.max(0, empathyScore);
+
+            const feedbackPanel = document.getElementById('feedback-panel');
+            feedbackPanel.classList.add('show');
+
+            if (selectedResponse.correct) {
+                feedbackPanel.classList.remove('incorrect');
+            } else {
+                feedbackPanel.classList.add('incorrect');
+            }
+
+            document.getElementById('feedback-text').textContent = selectedResponse.feedback;
+            document.getElementById('learning-point').textContent = "Learning Point: " + selectedResponse.learning;
+        }
+
+        function nextDialogue() {
+            currentDialogue++;
+            document.getElementById('feedback-panel').classList.remove('show');
+
+            if (currentDialogue < scenarios[currentScenario].responses.length) {
+                loadDialogue();
+            } else {
+                nextScenario();
+            }
+        }
+
+        function nextScenario() {
+            currentScenario++;
+            if (currentScenario < scenarios.length) {
+                loadScenario();
+            } else {
+                showFinalResults();
+            }
+        }
+
+        function showFinalResults() {
+            const container = document.querySelector('.counseling-container');
+            container.innerHTML = `
+                <h2>Role-Playing Complete!</h2>
+                <div class="score-display">Final Empathy Score: ${Math.max(0, empathyScore)}/100</div>
+                <div class="feedback-panel show">
+                    <h3>Counseling Skills Assessment</h3>
+                    <p>${getEmpathyMessage()}</p>
+                    <p><strong>Key Counseling Principles Learned:</strong></p>
+                    <ul>
+                        <li>Maintain confidentiality and patient autonomy</li>
+                        <li>Use non-judgmental, empathetic communication</li>
+                        <li>Balance cultural sensitivity with medical ethics</li>
+                        <li>Provide comprehensive, accurate information</li>
+                        <li>Address both medical and psychosocial needs</li>
+                    </ul>
+                    <button class="next-btn" onclick="restartRolePlay()">Practice Again</button>
+                </div>
+            `;
+        }
+
+        function getEmpathyMessage() {
+            const score = Math.max(0, empathyScore);
+            if (score >= 80) return "Outstanding! You demonstrate excellent counseling skills with high empathy and cultural competence.";
+            if (score >= 60) return "Good progress! Focus on building more trust and reducing judgmental responses.";
+            if (score >= 40) return "Developing skills! Work on empathetic responses and patient-centered communication.";
+            return "Keep practicing! Counseling requires patience, empathy, and cultural sensitivity.";
+        }
+
+        function restartRolePlay() {
+            currentScenario = 0;
+            currentDialogue = 0;
+            empathyScore = 0;
+            location.reload();
+        }
+
+        initRolePlay();
+    </script>
+</body>
+</html>
