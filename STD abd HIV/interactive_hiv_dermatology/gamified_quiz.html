@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIV Dermatology Gamified Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        .game-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            background-color: #e8f4f8;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .level-badge {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .question-card {
+            margin-bottom: 20px;
+            border: 2px solid #4ecdc4;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .question {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3436;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .option {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .option:hover {
+            background-color: #e9ecef;
+            border-color: #4ecdc4;
+            transform: scale(1.05);
+        }
+        .option.selected {
+            background-color: #4ecdc4;
+            color: white;
+            border-color: #26a69a;
+        }
+        .option.correct {
+            background-color: #51cf66;
+            color: white;
+            border-color: #40c057;
+        }
+        .option.incorrect {
+            background-color: #ff6b6b;
+            color: white;
+            border-color: #fa5252;
+        }
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff6b6b;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .submit-btn {
+            background-color: #4ecdc4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 20px auto;
+            display: block;
+        }
+        .submit-btn:hover {
+            background-color: #26a69a;
+        }
+        .next-btn {
+            background-color: #74b9ff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            margin: 20px auto;
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-left: 5px solid #4ecdc4;
+            display: none;
+            border-radius: 5px;
+        }
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .badge {
+            background-color: #ffd43b;
+            color: #2d3436;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: none;
+        }
+        .final-score {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 20px 0;
+            display: none;
+        }
+        .restart-btn {
+            background-color: #9c88ff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>🏆 HIV Dermatology Gamified Quiz</h1>
+            <p>Test your knowledge and earn points, badges, and levels!</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div>Score: <span id="score">0</span></div>
+            </div>
+            <div class="stat">
+                <div>Level: <span id="level">1</span></div>
+            </div>
+            <div class="stat">
+                <div class="level-badge" id="level-badge">Beginner</div>
+            </div>
+            <div class="stat">
+                <div>Streak: <span id="streak">0</span></div>
+            </div>
+        </div>
+
+        <div class="timer" id="timer">30</div>
+
+        <div class="question-card" id="question-card">
+            <div class="question" id="question-text"></div>
+            <div class="options" id="options-container"></div>
+        </div>
+
+        <button class="submit-btn" id="submit-btn">Submit Answer</button>
+        <button class="next-btn" id="next-btn">Next Question</button>
+
+        <div class="explanation" id="explanation">
+            <p id="explanation-text"></p>
+        </div>
+
+        <div class="badges">
+            <div class="badge" id="speed-badge">⚡ Speed Demon</div>
+            <div class="badge" id="streak-badge">🔥 Hot Streak</div>
+            <div class="badge" id="master-badge">👑 Dermatology Master</div>
+        </div>
+
+        <div class="final-score" id="final-score">
+            Quiz Complete! Your final score: <span id="final-score-value"></span><br>
+            Level reached: <span id="final-level"></span>
+        </div>
+
+        <button class="restart-btn" id="restart-btn">Play Again</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "A 35-year-old male patient presents with violaceous patches on his palate. What's the most likely diagnosis in HIV context?",
+                options: ["Kaposi's Sarcoma", "Oral Lichen Planus", "Squamous Cell Carcinoma", "Melanoma"],
+                correct: 0,
+                explanation: "Kaposi's Sarcoma is caused by HHV-8 and commonly affects oral mucosa in HIV patients. In India, it's seen in 10-20% of AIDS patients.",
+                points: 10
+            },
+            {
+                question: "Which dermatological condition is most prevalent in HIV patients in tropical climates like India?",
+                options: ["Psoriasis", "Seborrheic Dermatitis", "Vitiligo", "Alopecia Areata"],
+                correct: 1,
+                explanation: "Seborrheic Dermatitis is exacerbated by HIV and is very common in tropical climates. It presents as red, scaly patches in skin folds.",
+                points: 10
+            },
+            {
+                question: "Pruritic Papular Eruption (PPE) is associated with which immunological marker?",
+                options: ["High CD4 count", "Low CD4 count", "Normal CD8 count", "High eosinophilia"],
+                correct: 1,
+                explanation: "PPE occurs with CD4 counts <200 cells/μL and eosinophilia. In India, it's often confused with scabies or allergic reactions.",
+                points: 15
+            },
+            {
+                question: "What's the first-line treatment for oral candidiasis in HIV patients?",
+                options: ["Systemic antifungals", "Topical nystatin", "Antivirals", "Steroids"],
+                correct: 1,
+                explanation: "Topical nystatin or clotrimazole is first-line for oral thrush. Systemic antifungals are reserved for severe cases.",
+                points: 10
+            },
+            {
+                question: "In Indian HIV patients, Herpes Zoster can present as:",
+                options: ["Mild localized", "Severe disseminated", "Only ophthalmic", "Only thoracic"],
+                correct: 1,
+                explanation: "Herpes Zoster in HIV can be severe and involve multiple dermatomes. Early ART initiation is crucial.",
+                points: 15
+            },
+            {
+                question: "For Kaposi's Sarcoma treatment in low CD4 count patients, what combination is recommended?",
+                options: ["ART alone", "Chemotherapy alone", "ART + Chemotherapy", "Radiotherapy"],
+                correct: 2,
+                explanation: "Combination of ART and chemotherapy (like liposomal doxorubicin) is standard. Available through NACO in India.",
+                points: 20
+            },
+            {
+                question: "Which condition is commonly misdiagnosed as scabies in Indian HIV patients?",
+                options: ["Kaposi's Sarcoma", "Pruritic Papular Eruption", "Seborrheic Dermatitis", "Folliculitis"],
+                correct: 1,
+                explanation: "PPE presents with itchy papules and is often treated as scabies initially. CD4 count helps differentiate.",
+                points: 15
+            },
+            {
+                question: "What's the most appropriate initial management for seborrheic dermatitis in HIV?",
+                options: ["Systemic steroids", "Topical ketoconazole + steroid", "UV therapy", "Systemic retinoids"],
+                correct: 1,
+                explanation: "Topical antifungals with mild steroids are first-line. Ketoconazole 2% cream is commonly used in India.",
+                points: 10
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let level = 1;
+        let streak = 0;
+        let selectedOption = null;
+        let timerInterval;
+        let timeLeft = 30;
+        let badges = { speed: false, streak: false, master: false };
+
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('question-text').textContent = question.question;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => selectOption(index, optionElement));
+                optionsContainer.appendChild(optionElement);
+            });
+
+            selectedOption = null;
+            document.getElementById('submit-btn').style.display = 'block';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('explanation').style.display = 'none';
+
+            startTimer();
+            updateStats();
+        }
+
+        function selectOption(index, element) {
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedOption = index;
+        }
+
+        function submitAnswer() {
+            if (selectedOption === null) {
+                alert('Please select an answer!');
+                return;
+            }
+
+            clearInterval(timerInterval);
+            const question = questions[currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+
+            if (selectedOption === question.correct) {
+                options[selectedOption].classList.add('correct');
+                score += question.points + (timeLeft * 2); // Bonus for speed
+                streak++;
+                if (streak >= 3 && !badges.streak) {
+                    badges.streak = true;
+                    document.getElementById('streak-badge').style.display = 'inline-block';
+                }
+            } else {
+                options[selectedOption].classList.add('incorrect');
+                options[question.correct].classList.add('correct');
+                streak = 0;
+            }
+
+            if (timeLeft >= 20 && !badges.speed) {
+                badges.speed = true;
+                document.getElementById('speed-badge').style.display = 'inline-block';
+            }
+
+            level = Math.floor(score / 50) + 1;
+            updateLevelBadge();
+
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('explanation-text').textContent = question.explanation;
+            document.getElementById('explanation').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('question-card').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('explanation').style.display = 'none';
+            document.getElementById('timer').style.display = 'none';
+            document.getElementById('final-score').style.display = 'block';
+            document.getElementById('restart-btn').style.display = 'block';
+            document.getElementById('final-score-value').textContent = score;
+            document.getElementById('final-level').textContent = level;
+
+            if (score >= 100 && !badges.master) {
+                badges.master = true;
+                document.getElementById('master-badge').style.display = 'inline-block';
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            level = 1;
+            streak = 0;
+            timeLeft = 30;
+            badges = { speed: false, streak: false, master: false };
+            document.querySelectorAll('.badge').forEach(badge => badge.style.display = 'none');
+            document.getElementById('question-card').style.display = 'block';
+            document.getElementById('final-score').style.display = 'none';
+            document.getElementById('restart-btn').style.display = 'none';
+            document.getElementById('timer').style.display = 'block';
+            loadQuestion();
+        }
+
+        function startTimer() {
+            timeLeft = 30;
+            document.getElementById('timer').textContent = timeLeft;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitAnswer(); // Auto-submit when time runs out
+                }
+            }, 1000);
+        }
+
+        function updateStats() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('level').textContent = level;
+            document.getElementById('streak').textContent = streak;
+        }
+
+        function updateLevelBadge() {
+            const badges = ['Beginner', 'Intermediate', 'Advanced', 'Expert', 'Master'];
+            const badgeIndex = Math.min(Math.floor(level / 2), badges.length - 1);
+            document.getElementById('level-badge').textContent = badges[badgeIndex];
+        }
+
+        document.getElementById('submit-btn').addEventListener('click', submitAnswer);
+        document.getElementById('next-btn').addEventListener('click', nextQuestion);
+        document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+
+        loadQuestion();
+    </script>
+</body>
+</html>

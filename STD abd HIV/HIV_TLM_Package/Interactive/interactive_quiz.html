@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIV Dermatology Interactive Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .quiz-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .question-card {
+            margin-bottom: 20px;
+        }
+        .question {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option:hover {
+            background-color: #e9ecef;
+            border-color: #2196f3;
+        }
+        .option.selected {
+            background-color: #2196f3;
+            color: white;
+            border-color: #1976d2;
+        }
+        .option.correct {
+            background-color: #4caf50;
+            color: white;
+            border-color: #45a049;
+        }
+        .option.incorrect {
+            background-color: #f44336;
+            color: white;
+            border-color: #d32f2f;
+        }
+        .submit-btn {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px 0;
+            width: 100%;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .next-btn {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+        .next-btn:hover {
+            background-color: #1976d2;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .score-display {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            display: none;
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e8f4fd;
+            border-left: 4px solid #2196f3;
+            display: none;
+        }
+        .restart-btn {
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+        .restart-btn:hover {
+            background-color: #7b1fa2;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>HIV Dermatology Interactive Quiz</h1>
+    <div class="quiz-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+
+        <div class="question-card" id="question-card">
+            <div class="question" id="question-text"></div>
+            <div class="options" id="options-container"></div>
+        </div>
+
+        <button class="submit-btn" id="submit-btn">Submit Answer</button>
+        <button class="next-btn" id="next-btn">Next Question</button>
+
+        <div class="explanation" id="explanation">
+            <p id="explanation-text"></p>
+        </div>
+
+        <div class="score-display" id="score-display">
+            Quiz Complete! Your score: <span id="final-score"></span>
+        </div>
+
+        <button class="restart-btn" id="restart-btn">Restart Quiz</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Which HIV-related skin condition is characterized by violaceous patches and is caused by HHV-8?",
+                options: ["Kaposi's Sarcoma", "Seborrheic Dermatitis", "Pruritic Papular Eruption", "Oral Candidiasis"],
+                correct: 0,
+                explanation: "Kaposi's Sarcoma is caused by HHV-8 and presents with violaceous patches. In India, it's seen in 10-20% of HIV patients, often involving oral mucosa."
+            },
+            {
+                question: "What is the most common dermatological manifestation of HIV in India?",
+                options: ["Kaposi's Sarcoma", "Seborrheic Dermatitis", "Herpes Zoster", "Cutaneous Lymphoma"],
+                correct: 1,
+                explanation: "Seborrheic Dermatitis is the most common HIV dermatological manifestation in India, especially in tropical climates. It presents as red scaly patches in skin folds."
+            },
+            {
+                question: "Pruritic Papular Eruption (PPE) is associated with which laboratory finding?",
+                options: ["High CD4 count", "Low CD4 count", "High viral load only", "Normal CD4 count"],
+                correct: 1,
+                explanation: "PPE is associated with low CD4 counts and eosinophilia. In India, it's often misdiagnosed as scabies or allergic reactions."
+            },
+            {
+                question: "Oral candidiasis in HIV patients is typically caused by:",
+                options: ["Bacteria", "Virus", "Fungus", "Parasite"],
+                correct: 2,
+                explanation: "Oral candidiasis (thrush) is caused by Candida albicans overgrowth. In India, it's often the first dermatological sign of HIV immunosuppression."
+            },
+            {
+                question: "Herpes Zoster in HIV patients can be:",
+                options: ["Mild and localized", "Severe and disseminated", "Only oral", "Only genital"],
+                correct: 1,
+                explanation: "In HIV patients, Herpes Zoster can be severe and disseminated, involving multiple dermatomes. In India, this is more common than in immunocompetent individuals."
+            },
+            {
+                question: "Which treatment is most appropriate for Kaposi's Sarcoma in a patient with CD4 count of 180 cells/μL?",
+                options: ["ART only", "Chemotherapy only", "ART + Chemotherapy", "Traditional medicine"],
+                correct: 2,
+                explanation: "For Kaposi's Sarcoma with low CD4 count, combination of ART and chemotherapy is recommended. In India, liposomal doxorubicin is available through NACO."
+            },
+            {
+                question: "In Indian context, which HIV skin condition is commonly misdiagnosed as scabies?",
+                options: ["Kaposi's Sarcoma", "Pruritic Papular Eruption", "Seborrheic Dermatitis", "Oral Candidiasis"],
+                correct: 1,
+                explanation: "Pruritic Papular Eruption (PPE) is commonly misdiagnosed as scabies in India due to similar itchy red bumps presentation."
+            },
+            {
+                question: "What is the first-line treatment for seborrheic dermatitis in HIV patients?",
+                options: ["Systemic antifungals", "Topical antifungals + steroids", "Antivirals", "Chemotherapy"],
+                correct: 1,
+                explanation: "Topical antifungals combined with mild steroids are first-line for seborrheic dermatitis. In India, ketoconazole cream is commonly used."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedOption = null;
+
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('question-text').textContent = question.question;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => selectOption(index, optionElement));
+                optionsContainer.appendChild(optionElement);
+            });
+
+            selectedOption = null;
+            document.getElementById('submit-btn').style.display = 'block';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('explanation').style.display = 'none';
+
+            updateProgress();
+        }
+
+        function selectOption(index, element) {
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedOption = index;
+        }
+
+        function submitAnswer() {
+            if (selectedOption === null) {
+                alert('Please select an answer.');
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+
+            if (selectedOption === question.correct) {
+                options[selectedOption].classList.add('correct');
+                score++;
+            } else {
+                options[selectedOption].classList.add('incorrect');
+                options[question.correct].classList.add('correct');
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('explanation-text').textContent = question.explanation;
+            document.getElementById('explanation').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('question-card').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('explanation').style.display = 'none';
+            document.getElementById('score-display').style.display = 'block';
+            document.getElementById('restart-btn').style.display = 'block';
+            document.getElementById('final-score').textContent = `${score}/${questions.length}`;
+            document.getElementById('progress-fill').style.width = '100%';
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById('question-card').style.display = 'block';
+            document.getElementById('score-display').style.display = 'none';
+            document.getElementById('restart-btn').style.display = 'none';
+            loadQuestion();
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+        }
+
+        document.getElementById('submit-btn').addEventListener('click', submitAnswer);
+        document.getElementById('next-btn').addEventListener('click', nextQuestion);
+        document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+
+        loadQuestion();
+    </script>
+</body>
+</html>

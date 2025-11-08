@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STD Symptom Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .checker-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .symptom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .symptom-item {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .symptom-item:hover {
+            background-color: #e9ecef;
+            border-color: #2196f3;
+        }
+        .symptom-item.selected {
+            background-color: #2196f3;
+            color: white;
+            border-color: #1976d2;
+        }
+        .check-btn {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px 0;
+            width: 100%;
+        }
+        .check-btn:hover {
+            background-color: #45a049;
+        }
+        .result-panel {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .result-panel.high {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+        }
+        .result-panel.medium {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+        }
+        .result-panel.low {
+            background-color: #e8f5e8;
+            border-left: 4px solid #4caf50;
+        }
+        .reset-btn {
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .reset-btn:hover {
+            background-color: #7b1fa2;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #2196f3;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <h1>STD Symptom Checker</h1>
+    <div class="checker-container">
+        <h2>Select all symptoms present in your patient:</h2>
+
+        <div class="symptom-grid">
+            <div class="symptom-item" data-symptom="discharge">Genital discharge</div>
+            <div class="symptom-item" data-symptom="dysuria">Painful urination</div>
+            <div class="symptom-item" data-symptom="ulcers">Genital ulcers</div>
+            <div class="symptom-item" data-symptom="rash">Skin rash</div>
+            <div class="symptom-item" data-symptom="pain">Lower abdominal pain</div>
+            <div class="symptom-item" data-symptom="fever">Fever</div>
+            <div class="symptom-item" data-symptom="warts">Genital warts</div>
+            <div class="symptom-item" data-symptom="itching">Genital itching</div>
+            <div class="symptom-item" data-symptom="bleeding">Abnormal bleeding</div>
+            <div class="symptom-item" data-symptom="swelling">Genital swelling</div>
+            <div class="symptom-item" data-symptom="weight">Unexplained weight loss</div>
+            <div class="symptom-item" data-symptom="fatigue">Chronic fatigue</div>
+        </div>
+
+        <button class="check-btn" id="check-btn">Check Symptoms</button>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+
+        <div class="result-panel" id="result-panel">
+            <h3 id="result-title"></h3>
+            <p id="result-description"></p>
+            <p id="result-recommendations"></p>
+            <button class="reset-btn" onclick="resetChecker()">Check Another Patient</button>
+        </div>
+    </div>
+
+    <script>
+        const conditions = {
+            gonorrhea: {
+                name: "Gonorrhea",
+                symptoms: ["discharge", "dysuria", "pain", "fever"],
+                weight: 3,
+                description: "Purulent discharge, dysuria, and pelvic pain suggest gonococcal infection.",
+                recommendations: "Gram stain, culture, NAAT testing. Treat with ceftriaxone + azithromycin. Partner notification essential. In India: High prevalence in urban areas, emerging resistance."
+            },
+            chlamydia: {
+                name: "Chlamydia",
+                symptoms: ["discharge", "dysuria", "pain", "fever"],
+                weight: 2,
+                description: "Often asymptomatic, but can cause discharge, dysuria, and pelvic inflammatory disease.",
+                recommendations: "NAAT testing from urine/endocervical swab. Treat with azithromycin or doxycycline. Screen partners. In India: Under-diagnosed, high prevalence among youth."
+            },
+            syphilis: {
+                name: "Syphilis",
+                symptoms: ["ulcers", "rash", "fever", "fatigue"],
+                weight: 3,
+                description: "Primary chancre, secondary rash, systemic symptoms in secondary stage.",
+                recommendations: "VDRL/TPHA testing. Penicillin treatment. Clinical staging important. In India: Rising incidence, congenital syphilis a concern."
+            },
+            herpes: {
+                name: "Genital Herpes",
+                symptoms: ["ulcers", "pain", "itching", "fever"],
+                weight: 2,
+                description: "Painful genital ulcers, often recurrent. HSV-1 or HSV-2.",
+                recommendations: "Clinical diagnosis, PCR confirmation. Acyclovir/valacyclovir for treatment/suppression. In India: High seroprevalence, often undiagnosed."
+            },
+            hiv: {
+                name: "HIV",
+                symptoms: ["rash", "fever", "weight", "fatigue"],
+                weight: 2,
+                description: "Acute retroviral syndrome: fever, rash, fatigue. Chronic: asymptomatic until AIDS.",
+                recommendations: "HIV testing (rapid/combo). ART initiation. CD4 monitoring. In India: 2.1 million PLHIV, focus on key populations."
+            },
+            hpv: {
+                name: "HPV Infection",
+                symptoms: ["warts", "bleeding", "itching"],
+                weight: 2,
+                description: "Genital warts, abnormal Pap smears, potential progression to cervical cancer.",
+                recommendations: "Clinical examination, Pap smear, HPV DNA testing. Vaccination recommended. In India: High cervical cancer burden, HPV vaccine available."
+            },
+            trichomoniasis: {
+                name: "Trichomoniasis",
+                symptoms: ["discharge", "itching", "pain"],
+                weight: 2,
+                description: "Frothy yellow-green discharge, itching, vaginal odor.",
+                recommendations: "Wet mount microscopy, culture. Metronidazole treatment. In India: Common in women, often co-infects with other STDs."
+            },
+            bacterial_vaginosis: {
+                name: "Bacterial Vaginosis",
+                symptoms: ["discharge", "itching", "bleeding"],
+                weight: 1,
+                description: "Grayish-white discharge, fishy odor, pH >4.5.",
+                recommendations: "Amsel criteria, Gram stain. Metronidazole/clindamycin. In India: Very common, associated with adverse pregnancy outcomes."
+            }
+        };
+
+        let selectedSymptoms = [];
+
+        document.querySelectorAll('.symptom-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                const symptom = this.getAttribute('data-symptom');
+                if (this.classList.contains('selected')) {
+                    selectedSymptoms.push(symptom);
+                } else {
+                    selectedSymptoms = selectedSymptoms.filter(s => s !== symptom);
+                }
+            });
+        });
+
+        document.getElementById('check-btn').addEventListener('click', function() {
+            if (selectedSymptoms.length === 0) {
+                alert('Please select at least one symptom.');
+                return;
+            }
+
+            let scores = {};
+            let maxScore = 0;
+            let likelyCondition = null;
+
+            // Calculate scores for each condition
+            for (const [key, condition] of Object.entries(conditions)) {
+                let score = 0;
+                condition.symptoms.forEach(symptom => {
+                    if (selectedSymptoms.includes(symptom)) {
+                        score += condition.weight;
+                    }
+                });
+                scores[key] = score;
+                if (score > maxScore) {
+                    maxScore = score;
+                    likelyCondition = key;
+                }
+            }
+
+            // Determine likelihood
+            let likelihood;
+            if (maxScore >= 6) {
+                likelihood = 'high';
+            } else if (maxScore >= 3) {
+                likelihood = 'medium';
+            } else {
+                likelihood = 'low';
+            }
+
+            // Display result
+            const condition = conditions[likelyCondition];
+            document.getElementById('result-title').textContent = `${condition.name} (${likelihood.charAt(0).toUpperCase() + likelihood.slice(1)} Likelihood)`;
+            document.getElementById('result-description').textContent = condition.description;
+            document.getElementById('result-recommendations').textContent = condition.recommendations;
+
+            const resultPanel = document.getElementById('result-panel');
+            resultPanel.className = `result-panel ${likelihood}`;
+            resultPanel.style.display = 'block';
+
+            // Update progress bar
+            const progressPercent = (maxScore / 12) * 100; // Max possible score is 12
+            document.getElementById('progress-fill').style.width = progressPercent + '%';
+        });
+
+        function resetChecker() {
+            selectedSymptoms = [];
+            document.querySelectorAll('.symptom-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            document.getElementById('result-panel').style.display = 'none';
+            document.getElementById('progress-fill').style.width = '0%';
+        }
+    </script>
+</body>
+</html>

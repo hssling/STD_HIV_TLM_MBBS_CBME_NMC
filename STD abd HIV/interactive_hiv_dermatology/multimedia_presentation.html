@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIV Dermatology Multimedia Interactive Presentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: white;
+            overflow-x: hidden;
+        }
+        .presentation-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide-content {
+            max-width: 1200px;
+            text-align: center;
+        }
+        .slide-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .slide-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            margin-top: 40px;
+        }
+        .content-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .content-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .card-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+        .interactive-element {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 800px;
+        }
+        .symptom-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .symptom-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .symptom-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #4ecdc4;
+        }
+        .symptom-item.selected {
+            background: #4ecdc4;
+            border-color: #26a69a;
+        }
+        .diagnosis-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: none;
+        }
+        .treatment-timeline {
+            position: relative;
+            margin: 30px 0;
+            padding: 20px;
+        }
+        .timeline-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #4ecdc4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .timeline-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(10px);
+        }
+        .timeline-item.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-left-color: #ff6b6b;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px 0;
+        }
+        .video-placeholder {
+            width: 100%;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .video-placeholder:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+        }
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .slide-indicator {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 1001;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #4ecdc4;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .fullscreen-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            font-size: 1.2rem;
+        }
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: 2rem;
+            }
+            .slide-subtitle {
+                font-size: 1.2rem;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <button class="fullscreen-btn" id="fullscreen-btn">⛶</button>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Introduction -->
+        <div class="slide active" id="slide-1">
+            <div class="slide-content">
+                <div class="slide-title">HIV Dermatology</div>
+                <div class="slide-subtitle">Integration with Dermatology Department</div>
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="card-icon">🔬</div>
+                        <div class="card-title">Clinical Manifestations</div>
+                        <div class="card-description">Explore dermatological signs of HIV infection and their significance in Indian context</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">🩺</div>
+                        <div class="card-title">Diagnostic Approach</div>
+                        <div class="card-description">Learn systematic evaluation of skin conditions in HIV patients</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">💊</div>
+                        <div class="card-title">Treatment Strategies</div>
+                        <div class="card-description">Evidence-based management combining ART and dermatological therapies</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">🇮🇳</div>
+                        <div class="card-title">Indian Context</div>
+                        <div class="card-description">Prevalence patterns, cultural considerations, and NACO guidelines</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Common Conditions -->
+        <div class="slide" id="slide-2">
+            <div class="slide-content">
+                <div class="slide-title">Common HIV Dermatological Conditions</div>
+                <div class="slide-subtitle">Focus on Indian Epidemiology</div>
+                <div class="content-grid">
+                    <div class="content-card" onclick="showConditionDetail('seborrheic')">
+                        <div class="card-icon">🧴</div>
+                        <div class="card-title">Seborrheic Dermatitis</div>
+                        <div class="card-description">Most common HIV dermatosis in India. Red scaly patches in skin folds. Exacerbated by tropical climate.</div>
+                    </div>
+                    <div class="content-card" onclick="showConditionDetail('ppe')">
+                        <div class="card-icon">🦗</div>
+                        <div class="card-title">Pruritic Papular Eruption</div>
+                        <div class="card-description">Often misdiagnosed as scabies. CD4 <200. Itchy papules on extensor surfaces.</div>
+                    </div>
+                    <div class="content-card" onclick="showConditionDetail('kaposi')">
+                        <div class="card-icon">🎭</div>
+                        <div class="card-title">Kaposi's Sarcoma</div>
+                        <div class="card-description">HHV-8 associated. Violaceous patches/plaques. 10-20% of Indian AIDS patients.</div>
+                    </div>
+                    <div class="content-card" onclick="showConditionDetail('candidiasis')">
+                        <div class="card-icon">🍄</div>
+                        <div class="card-title">Oral Candidiasis</div>
+                        <div class="card-description">First sign of immunosuppression. White patches on tongue/buccal mucosa.</div>
+                    </div>
+                </div>
+                <div class="interactive-element" id="condition-detail" style="display: none;">
+                    <h3 id="condition-title"></h3>
+                    <p id="condition-description"></p>
+                    <div class="video-container">
+                        <div class="video-placeholder" onclick="playVideo()">
+                            🎥<br><small>Click to play clinical video</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Interactive Diagnosis -->
+        <div class="slide" id="slide-3">
+            <div class="slide-content">
+                <div class="slide-title">Interactive Diagnosis Simulator</div>
+                <div class="slide-subtitle">Test your diagnostic skills</div>
+                <div class="interactive-element">
+                    <h3>Patient Presentation: 35-year-old male with itchy skin lesions</h3>
+                    <p><strong>History:</strong> HIV diagnosed 2 years ago, on ART, CD4 180 cells/μL</p>
+                    <p><strong>Select observed symptoms:</strong></p>
+                    <div class="symptom-selector">
+                        <div class="symptom-item" onclick="selectSymptom('Red scaly patches in axillae')">Red scaly patches in axillae</div>
+                        <div class="symptom-item" onclick="selectSymptom('Violaceous oral lesions')">Violaceous oral lesions</div>
+                        <div class="symptom-item" onclick="selectSymptom('Multiple pruritic papules')">Multiple pruritic papules</div>
+                        <div class="symptom-item" onclick="selectSymptom('White oral plaques')">White oral plaques</div>
+                    </div>
+                    <div class="diagnosis-result" id="diagnosis-result">
+                        <h4>Diagnosis: <span id="diagnosis-text"></span></h4>
+                        <p id="diagnosis-explanation"></p>
+                        <p><strong>Treatment:</strong> <span id="treatment-text"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Treatment Timeline -->
+        <div class="slide" id="slide-4">
+            <div class="slide-content">
+                <div class="slide-title">Treatment Timeline & Management</div>
+                <div class="slide-subtitle">Integrated ART and Dermatological Care</div>
+                <div class="treatment-timeline">
+                    <div class="timeline-item" onclick="showTimelineDetail('immediate')">
+                        <h4>🚨 Immediate Management</h4>
+                        <p>Symptomatic relief, infection control, ART optimization</p>
+                    </div>
+                    <div class="timeline-item" onclick="showTimelineDetail('short')">
+                        <h4>📅 Short-term (1-4 weeks)</h4>
+                        <p>Specific dermatological treatment, CD4 monitoring</p>
+                    </div>
+                    <div class="timeline-item" onclick="showTimelineDetail('long')">
+                        <h4>📈 Long-term (3-6 months)</h4>
+                        <p>ART adherence, prophylaxis, regular follow-up</p>
+                    </div>
+                </div>
+                <div class="interactive-element" id="timeline-detail" style="display: none;">
+                    <h3 id="timeline-title"></h3>
+                    <div id="timeline-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Indian Context -->
+        <div class="slide" id="slide-5">
+            <div class="slide-content">
+                <div class="slide-title">HIV Dermatology in Indian Context</div>
+                <div class="slide-subtitle">Cultural, Epidemiological & Healthcare Considerations</div>
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="card-icon">🌡️</div>
+                        <div class="card-title">Tropical Climate Impact</div>
+                        <div class="card-description">Seborrheic dermatitis exacerbated by heat and humidity. Higher incidence in coastal regions.</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">🕉️</div>
+                        <div class="card-title">Cultural Beliefs</div>
+                        <div class="card-description">Integration of traditional medicine. Addressing stigma and misconceptions about HIV skin conditions.</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">🏥</div>
+                        <div class="card-title">NACO Guidelines</div>
+                        <div class="card-description">Free ART, chemotherapy for Kaposi's sarcoma. Integrated HIV-dermatology clinics in medical colleges.</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">🔍</div>
+                        <div class="card-title">Diagnostic Challenges</div>
+                        <div class="card-description">Limited access to advanced diagnostics. Reliance on clinical acumen and basic investigations.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Case Studies -->
+        <div class="slide" id="slide-6">
+            <div class="slide-content">
+                <div class="slide-title">Clinical Case Studies</div>
+                <div class="slide-subtitle">Real-world scenarios from Indian HIV clinics</div>
+                <div class="interactive-element">
+                    <div id="case-study-content">
+                        <h3>Case 1: Rural HIV Patient with Skin Rash</h3>
+                        <p><strong>Patient:</strong> 42-year-old farmer, recently diagnosed HIV, CD4 150</p>
+                        <p><strong>Presentation:</strong> Itchy red patches in groin and axillae</p>
+                        <p><strong>Challenge:</strong> Limited access to dermatologist, traditional medicine beliefs</p>
+                        <button onclick="showCaseResolution(1)" style="background: #4ecdc4; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 15px;">Show Resolution</button>
+                        <div id="case-resolution-1" style="display: none; margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                            <p><strong>Diagnosis:</strong> Seborrheic Dermatitis</p>
+                            <p><strong>Management:</strong> Ketoconazole 2% cream + hydrocortisone, ART optimization, patient education</p>
+                            <p><strong>Outcome:</strong> Significant improvement in 2 weeks, continued follow-up</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Conclusion -->
+        <div class="slide" id="slide-7">
+            <div class="slide-content">
+                <div class="slide-title">Key Takeaways</div>
+                <div class="slide-subtitle">Integrating HIV Care with Dermatology</div>
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="card-icon">🎯</div>
+                        <div class="card-title">Early Recognition</div>
+                        <div class="card-description">Skin manifestations often first sign of HIV progression</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">🤝</div>
+                        <div class="card-title">Multidisciplinary Approach</div>
+                        <div class="card-description">Collaboration between HIV specialists and dermatologists</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">💪</div>
+                        <div class="card-title">ART Optimization</div>
+                        <div class="card-description">Treating skin conditions improves ART adherence</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">🌍</div>
+                        <div class="card-title">Context Matters</div>
+                        <div class="card-description">Consider Indian epidemiology, culture, and healthcare resources</div>
+                    </div>
+                </div>
+                <div class="interactive-element">
+                    <h3>Ready to apply your knowledge?</h3>
+                    <p>Explore the interactive components to deepen your understanding of HIV dermatology.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prev-btn" disabled>⬅️</button>
+        <button class="nav-btn" id="next-btn">➡️</button>
+    </div>
+
+    <div class="slide-indicator" id="slide-indicator">1 / 7</div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 7;
+        let selectedSymptoms = [];
+
+        function updateNavigation() {
+            document.getElementById('prev-btn').disabled = currentSlide === 1;
+            document.getElementById('next-btn').disabled = currentSlide === totalSlides;
+            document.getElementById('slide-indicator').textContent = `${currentSlide} / ${totalSlides}`;
+            document.getElementById('progress-fill').style.width = `${(currentSlide / totalSlides) * 100}%`;
+        }
+
+        function showSlide(slideNumber) {
+            document.querySelectorAll('.slide').forEach(slide => slide.classList.remove('active'));
+            document.getElementById(`slide-${slideNumber}`).classList.add('active');
+            currentSlide = slideNumber;
+            updateNavigation();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        function showConditionDetail(condition) {
+            const details = {
+                seborrheic: {
+                    title: "Seborrheic Dermatitis in HIV",
+                    description: "Most common dermatological manifestation in Indian HIV patients. Presents as red, scaly patches in skin folds. Caused by Malassezia overgrowth. Tropical climate exacerbates the condition."
+                },
+                ppe: {
+                    title: "Pruritic Papular Eruption (PPE)",
+                    description: "Highly pruritic papules on extensor surfaces. Associated with low CD4 counts. Often misdiagnosed as scabies in India. Eosinophilia common."
+                },
+                kaposi: {
+                    title: "Kaposi's Sarcoma",
+                    description: "HHV-8 associated malignancy. Violaceous patches/plaques/nodules. Oral involvement common. Requires ART + chemotherapy in advanced cases."
+                },
+                candidiasis: {
+                    title: "Oral Candidiasis",
+                    description: "Caused by Candida albicans overgrowth. White patches on oral mucosa. Often first sign of immunosuppression. Topical nystatin first-line."
+                }
+            };
+
+            const detail = details[condition];
+            document.getElementById('condition-title').textContent = detail.title;
+            document.getElementById('condition-description').textContent = detail.description;
+            document.getElementById('condition-detail').style.display = 'block';
+        }
+
+        function selectSymptom(symptom) {
+            const element = event.target;
+            element.classList.toggle('selected');
+
+            if (element.classList.contains('selected')) {
+                selectedSymptoms.push(symptom);
+            } else {
+                selectedSymptoms = selectedSymptoms.filter(s => s !== symptom);
+            }
+
+            updateDiagnosis();
+        }
+
+        function updateDiagnosis() {
+            const diagnosisResult = document.getElementById('diagnosis-result');
+            const diagnosisText = document.getElementById('diagnosis-text');
+            const diagnosisExplanation = document.getElementById('diagnosis-explanation');
+            const treatmentText = document.getElementById('treatment-text');
+
+            if (selectedSymptoms.includes('Red scaly patches in axillae')) {
+                diagnosisText.textContent = 'Seborrheic Dermatitis';
+                diagnosisExplanation.textContent = 'Classic presentation with red scaly patches in skin folds. Very common in HIV patients in tropical climates.';
+                treatmentText.textContent = 'Topical ketoconazole 2% + mild steroid cream twice daily';
+                diagnosisResult.style.display = 'block';
+            } else if (selectedSymptoms.includes('Multiple pruritic papules')) {
+                diagnosisText.textContent = 'Pruritic Papular Eruption';
+                diagnosisExplanation.textContent = 'Itchy papules associated with low CD4 count. Commonly misdiagnosed in India.';
+                treatmentText.textContent = 'Topical steroids + oral antihistamines, optimize ART';
+                diagnosisResult.style.display = 'block';
+            } else if (selectedSymptoms.includes('Violaceous oral lesions')) {
+                diagnosisText.textContent = 'Kaposi\'s Sarcoma';
+                diagnosisExplanation.textContent = 'HHV-8 associated malignancy. Requires biopsy confirmation.';
+                treatmentText.textContent = 'ART + chemotherapy (liposomal doxorubicin)';
+                diagnosisResult.style.display = 'block';
+            } else if (selectedSymptoms.includes('White oral plaques')) {
+                diagnosisText.textContent = 'Oral Candidiasis';
+                diagnosisExplanation.textContent = 'Fungal infection indicating immunosuppression.';
+                treatmentText.textContent = 'Topical nystatin oral suspension';
+                diagnosisResult.style.display = 'block';
+            } else {
+                diagnosisResult.style.display = 'none';
+            }
+        }
+
+        function showTimelineDetail(period) {
+            const details = {
+                immediate: {
+                    title: "Immediate Management (First 24-48 hours)",
+                    content: `
+                        <ul>
+                            <li>Symptomatic relief (antihistamines for itching)</li>
+                            <li>Infection control (topical antifungals/antibiotics)</li>
+                            <li>ART adherence assessment and optimization</li>
+                            <li>CD4 count and viral load ordering</li>
+                            <li>Pain management for severe cases</li>
+                        </ul>
+                    `
+                },
+                short: {
+                    title: "Short-term Management (1-4 weeks)",
+                    content: `
+                        <ul>
+                            <li>Specific dermatological treatment based on diagnosis</li>
+                            <li>Regular CD4 monitoring</li>
+                            <li>Treatment response assessment</li>
+                            <li>Side effect monitoring</li>
+                            <li>Patient education and counseling</li>
+                        </ul>
+                    `
+                },
+                long: {
+                    title: "Long-term Management (3-6 months)",
+                    content: `
+                        <ul>
+                            <li>ART regimen optimization</li>
+                            <li>Prophylaxis for opportunistic infections</li>
+                            <li>Regular dermatological follow-up</li>
+                            <li>Quality of life assessment</li>
+                            <li>Prevention education</li>
+                        </ul>
+                    `
+                }
+            };
+
+            const detail = details[period];
+            document.getElementById('timeline-title').textContent = detail.title;
+            document.getElementById('timeline-content').innerHTML = detail.content;
+            document.getElementById('timeline-detail').style.display = 'block';
+
+            document.querySelectorAll('.timeline-item').forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function showCaseResolution(caseNumber) {
+            document.getElementById(`case-resolution-${caseNumber}`).style.display = 'block';
+        }
+
+        function playVideo() {
+            alert('Video playback would start here. In a real implementation, this would load clinical demonstration videos.');
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Event listeners
+        document.getElementById('next-btn').addEventListener('click', nextSlide);
+        document.getElementById('prev-btn').addEventListener('click', prevSlide);
+        document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
+            }
+        });
+
+        // Initialize
+        updateNavigation();
+    </script>
+</body>
+</html>

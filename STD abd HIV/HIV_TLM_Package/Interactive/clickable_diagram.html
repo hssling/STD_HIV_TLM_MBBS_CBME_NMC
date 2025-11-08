@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIV Skin Manifestations - Clickable Diagram</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .diagram-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .skin-area {
+            width: 200px;
+            height: 200px;
+            background-color: #ffe4b5;
+            border-radius: 50%;
+            margin: 20px auto;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .skin-area:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+        .manifestation {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ff6b6b;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .manifestation:hover {
+            background-color: #ff5252;
+            transform: scale(1.2);
+        }
+        .info-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-left: 4px solid #2196f3;
+            display: none;
+        }
+        .info-panel.show {
+            display: block;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .back-btn {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .back-btn:hover {
+            background-color: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <h1>HIV Skin Manifestations - Interactive Diagram</h1>
+    <div class="diagram-container">
+        <h2>Click on the skin areas to learn about HIV-related dermatological conditions</h2>
+        <div class="skin-area" id="skin-diagram">
+            <!-- Kaposi's Sarcoma -->
+            <div class="manifestation" id="kaposi" style="top: 20%; left: 30%;" title="Kaposi's Sarcoma"></div>
+            <!-- Seborrheic Dermatitis -->
+            <div class="manifestation" id="seborrheic" style="top: 40%; left: 60%;" title="Seborrheic Dermatitis"></div>
+            <!-- Pruritic Papular Eruption -->
+            <div class="manifestation" id="pruritic" style="top: 70%; left: 40%;" title="Pruritic Papular Eruption"></div>
+            <!-- Oral Candidiasis -->
+            <div class="manifestation" id="candidiasis" style="top: 50%; left: 20%;" title="Oral Candidiasis"></div>
+            <!-- Herpes Zoster -->
+            <div class="manifestation" id="herpes" style="top: 60%; left: 70%;" title="Herpes Zoster"></div>
+        </div>
+        <div class="info-panel" id="info-panel">
+            <h3 id="condition-title"></h3>
+            <p id="condition-description"></p>
+            <p id="condition-context"></p>
+            <button class="back-btn" onclick="hideInfo()">Back to Diagram</button>
+        </div>
+    </div>
+
+    <script>
+        const conditions = {
+            kaposi: {
+                title: "Kaposi's Sarcoma",
+                description: "A cancer that causes red or purple patches on the skin. Caused by HHV-8 virus, more common in advanced HIV.",
+                context: "In Indian context: Seen in 10-20% of HIV patients. Often involves oral mucosa and lower extremities."
+            },
+            seborrheic: {
+                title: "Seborrheic Dermatitis",
+                description: "Red, scaly patches in skin folds. Caused by Malassezia yeast overgrowth, worsened by immune deficiency.",
+                context: "In Indian context: Common in HIV patients, especially in tropical climate. Face and scalp most affected."
+            },
+            pruritic: {
+                title: "Pruritic Papular Eruption (PPE)",
+                description: "Itchy red bumps, especially on extremities. Associated with eosinophilia and low CD4 counts.",
+                context: "In Indian context: Very common in HIV patients. Often misdiagnosed as scabies or allergic reaction."
+            },
+            candidiasis: {
+                title: "Oral Candidiasis (Thrush)",
+                description: "White patches on tongue and inner cheeks. Caused by Candida albicans overgrowth.",
+                context: "In Indian context: Early sign of immunosuppression. Often first dermatological manifestation of HIV."
+            },
+            herpes: {
+                title: "Herpes Zoster (Shingles)",
+                description: "Painful rash along nerve pathways. Caused by reactivation of Varicella-Zoster virus.",
+                context: "In Indian context: More severe and disseminated in HIV patients. Can involve multiple dermatomes."
+            }
+        };
+
+        document.querySelectorAll('.manifestation').forEach(element => {
+            element.addEventListener('click', function() {
+                const conditionId = this.id;
+                const condition = conditions[conditionId];
+                document.getElementById('condition-title').textContent = condition.title;
+                document.getElementById('condition-description').textContent = condition.description;
+                document.getElementById('condition-context').textContent = condition.context;
+                document.getElementById('info-panel').classList.add('show');
+                document.getElementById('skin-diagram').style.display = 'none';
+            });
+        });
+
+        function hideInfo() {
+            document.getElementById('info-panel').classList.remove('show');
+            document.getElementById('skin-diagram').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

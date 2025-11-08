@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Patient Simulation - STD Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .simulation-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .patient-profile {
+            background-color: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .scenario-text {
+            background-color: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .option-card {
+            background-color: #f0f8ff;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option-card:hover {
+            background-color: #e0f2ff;
+            transform: translateY(-2px);
+        }
+        .outcome-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e8;
+            border-left: 4px solid #4caf50;
+            display: none;
+        }
+        .outcome-panel.show {
+            display: block;
+        }
+        .outcome-panel.error {
+            background-color: #ffebee;
+            border-left-color: #f44336;
+        }
+        .next-btn {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .next-btn:hover {
+            background-color: #1976d2;
+        }
+        .progress-bar {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 20px;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            background-color: #4caf50;
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        .score-display {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Virtual Patient Simulation - STD Management</h1>
+    <p>Navigate through complex patient scenarios with branching decisions. Make evidence-based choices following Indian treatment protocols.</p>
+
+    <div class="simulation-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="score-display">Score: <span id="score">0</span>/100</div>
+
+        <div class="patient-profile" id="patient-profile">
+            <h3>Patient Profile</h3>
+            <p id="patient-info">Loading patient information...</p>
+        </div>
+
+        <div class="scenario-text" id="scenario-text">
+            Initial scenario loading...
+        </div>
+
+        <div class="options-container" id="options-container">
+            <!-- Options will be dynamically generated -->
+        </div>
+
+        <div class="outcome-panel" id="outcome-panel">
+            <h3>Outcome</h3>
+            <p id="outcome-text"></p>
+            <p id="learning-points"></p>
+            <button class="next-btn" id="next-btn" onclick="nextScenario()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        let currentScenario = 0;
+        let score = 0;
+        let scenarioHistory = [];
+
+        const scenarios = [
+            {
+                patient: {
+                    name: "Priya Sharma",
+                    age: 28,
+                    occupation: "Office worker",
+                    location: "Mumbai",
+                    background: "Married, 2 children, presents with vaginal discharge and lower abdominal pain for 3 days."
+                },
+                scenario: "Priya presents to your clinic with complaints of yellowish vaginal discharge and lower abdominal pain. She reports unprotected intercourse with her husband 5 days ago. Vital signs: Temp 37.8°C, BP 120/80. On examination: Tender lower abdomen, cervical motion tenderness present.",
+                options: [
+                    {
+                        text: "Order urine pregnancy test and pelvic ultrasound immediately",
+                        correct: false,
+                        outcome: "While important, this delays urgent STD evaluation. PID can cause infertility if not treated promptly.",
+                        points: -10,
+                        learning: "In suspected PID, empirical treatment should start while awaiting investigations."
+                    },
+                    {
+                        text: "Start empirical treatment for gonorrhea and chlamydia with ceftriaxone 250mg IM + azithromycin 1g oral + metronidazole 400mg BD for 14 days",
+                        correct: true,
+                        outcome: "Correct! Following NACO guidelines for PID treatment. Partner notification and counseling initiated.",
+                        points: 25,
+                        learning: "NACO recommends dual therapy for gonorrhea due to resistance patterns in India."
+                    },
+                    {
+                        text: "Prescribe only oral antibiotics and ask her to follow up in 1 week",
+                        correct: false,
+                        outcome: "Inadequate! Oral regimens have poor efficacy for gonorrhea. Risk of treatment failure and complications.",
+                        points: -15,
+                        learning: "Injectable ceftriaxone is essential for gonorrhea treatment in India."
+                    },
+                    {
+                        text: "Refer to gynecologist without starting treatment",
+                        correct: false,
+                        outcome: "Delayed treatment! PID requires immediate intervention to prevent complications.",
+                        points: -20,
+                        learning: "Community physicians should initiate treatment for STDs as per NACO protocols."
+                    }
+                ]
+            },
+            {
+                patient: {
+                    name: "Rahul Kumar",
+                    age: 32,
+                    occupation: "IT Professional",
+                    location: "Bangalore",
+                    background: "Single, multiple sexual partners, presents with painful urination and urethral discharge."
+                },
+                scenario: "Rahul reports dysuria and purulent urethral discharge for 2 days. He admits to unprotected sex with multiple partners recently. Examination shows inflamed urethral meatus with discharge.",
+                options: [
+                    {
+                        text: "Prescribe ciprofloxacin 500mg BD for 7 days",
+                        correct: false,
+                        outcome: "Outdated regimen! High resistance to fluoroquinolones in India. Treatment failure likely.",
+                        points: -15,
+                        learning: "NACO no longer recommends ciprofloxacin for gonorrhea due to >50% resistance."
+                    },
+                    {
+                        text: "Give ceftriaxone 250mg IM single dose + azithromycin 1g oral single dose",
+                        correct: true,
+                        outcome: "Optimal treatment! Following current NACO STI guidelines. Test for HIV and syphilis advised.",
+                        points: 25,
+                        learning: "Single-dose regimens improve compliance and reduce resistance development."
+                    },
+                    {
+                        text: "Take urethral swab and wait for culture results before treating",
+                        correct: false,
+                        outcome: "Delayed treatment! Syndromic approach recommended in resource-limited settings.",
+                        points: -10,
+                        learning: "In India, syndromic management is preferred over lab-dependent diagnosis."
+                    },
+                    {
+                        text: "Prescribe herbal medicines and advise abstinence",
+                        correct: false,
+                        outcome: "Inappropriate! Modern medicine required for bacterial STDs. Risk of complications.",
+                        points: -20,
+                        learning: "Traditional remedies have no role in treating bacterial STDs."
+                    }
+                ]
+            },
+            {
+                patient: {
+                    name: "Anjali Patel",
+                    age: 24,
+                    occupation: "College Student",
+                    location: "Delhi",
+                    background: "Sexually active, inconsistent condom use, presents with genital ulcers."
+                },
+                scenario: "Anjali has painful genital ulcers for 4 days. She reports multiple sexual partners and inconsistent condom use. Examination reveals 3-4 shallow ulcers on labia with tender inguinal lymph nodes.",
+                options: [
+                    {
+                        text: "Prescribe acyclovir 400mg TDS for 7-10 days",
+                        correct: true,
+                        outcome: "Correct initial management! HSV infection likely. Counseling on safer sex practices given.",
+                        points: 20,
+                        learning: "Genital herpes requires antiviral treatment and partner notification."
+                    },
+                    {
+                        text: "Perform biopsy immediately for histopathological diagnosis",
+                        correct: false,
+                        outcome: "Unnecessary delay! Clinical diagnosis sufficient for starting treatment.",
+                        points: -10,
+                        learning: "In resource-limited settings, clinical diagnosis guides initial management."
+                    },
+                    {
+                        text: "Treat as syphilis with penicillin injection",
+                        correct: false,
+                        outcome: "Wrong diagnosis! Syphilitic ulcers are painless. Risk of untreated herpes.",
+                        points: -15,
+                        learning: "Painful ulcers suggest herpes, painless suggest syphilis."
+                    },
+                    {
+                        text: "Advise topical antiseptics only",
+                        correct: false,
+                        outcome: "Inadequate! Antiviral therapy required for herpes. Risk of dissemination.",
+                        points: -20,
+                        learning: "Genital herpes needs systemic antiviral treatment."
+                    }
+                ]
+            },
+            {
+                patient: {
+                    name: "Vikram Singh",
+                    age: 35,
+                    occupation: "Truck Driver",
+                    location: "Highway Clinic",
+                    background: "High-risk behavior, multiple partners, seeks HIV testing."
+                },
+                scenario: "Vikram requests HIV testing. He reports sex with multiple partners including sex workers, and occasional injecting drug use. No current symptoms. Last test 2 years ago was negative.",
+                options: [
+                    {
+                        text: "Perform rapid HIV test and provide pre-test counseling",
+                        correct: true,
+                        outcome: "Appropriate! Following NACO guidelines for HIV testing. Risk reduction counseling provided.",
+                        points: 20,
+                        learning: "High-risk individuals should be tested regularly as per NACO recommendations."
+                    },
+                    {
+                        text: "Refuse testing because he has no symptoms",
+                        correct: false,
+                        outcome: "Wrong! Asymptomatic individuals in high-risk groups should be tested.",
+                        points: -15,
+                        learning: "HIV testing is recommended for all high-risk individuals regardless of symptoms."
+                    },
+                    {
+                        text: "Order ELISA only, no rapid test",
+                        correct: false,
+                        outcome: "Inadequate! Rapid tests provide immediate results for counseling.",
+                        points: -10,
+                        learning: "Rapid HIV tests enable same-day results and immediate counseling."
+                    },
+                    {
+                        text: "Test only if he pays for it",
+                        correct: false,
+                        outcome: "Unethical! HIV testing is free under NACO program.",
+                        points: -20,
+                        learning: "Government programs provide free HIV testing and treatment."
+                    }
+                ]
+            }
+        ];
+
+        function initSimulation() {
+            loadScenario();
+        }
+
+        function loadScenario() {
+            const scenario = scenarios[currentScenario];
+
+            document.getElementById('patient-info').innerHTML = `
+                <strong>Name:</strong> ${scenario.patient.name}<br>
+                <strong>Age:</strong> ${scenario.patient.age}<br>
+                <strong>Occupation:</strong> ${scenario.patient.occupation}<br>
+                <strong>Location:</strong> ${scenario.patient.location}<br>
+                <strong>Background:</strong> ${scenario.patient.background}
+            `;
+
+            document.getElementById('scenario-text').textContent = scenario.scenario;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            scenario.options.forEach((option, index) => {
+                const optionCard = document.createElement('div');
+                optionCard.className = 'option-card';
+                optionCard.textContent = option.text;
+                optionCard.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionCard);
+            });
+
+            updateProgress();
+        }
+
+        function selectOption(optionIndex) {
+            const scenario = scenarios[currentScenario];
+            const selectedOption = scenario.options[optionIndex];
+
+            score += selectedOption.points;
+            document.getElementById('score').textContent = score;
+
+            const outcomePanel = document.getElementById('outcome-panel');
+            outcomePanel.classList.add('show');
+
+            if (selectedOption.correct) {
+                outcomePanel.classList.remove('error');
+            } else {
+                outcomePanel.classList.add('error');
+            }
+
+            document.getElementById('outcome-text').textContent = selectedOption.outcome;
+            document.getElementById('learning-points').textContent = "Learning Point: " + selectedOption.learning;
+        }
+
+        function nextScenario() {
+            currentScenario++;
+            document.getElementById('outcome-panel').classList.remove('show');
+
+            if (currentScenario < scenarios.length) {
+                loadScenario();
+            } else {
+                showFinalResults();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentScenario + 1) / scenarios.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+        }
+
+        function showFinalResults() {
+            const container = document.querySelector('.simulation-container');
+            container.innerHTML = `
+                <h2>Simulation Complete!</h2>
+                <div class="score-display">Final Score: ${score}/100</div>
+                <div class="outcome-panel show">
+                    <h3>Performance Summary</h3>
+                    <p>${getPerformanceMessage()}</p>
+                    <p><strong>Key Learning Points:</strong></p>
+                    <ul>
+                        <li>Syndromic management approach in Indian context</li>
+                        <li>NACO treatment guidelines for STDs</li>
+                        <li>Importance of partner notification and counseling</li>
+                        <li>Rising antimicrobial resistance considerations</li>
+                    </ul>
+                    <button class="next-btn" onclick="restartSimulation()">Restart Simulation</button>
+                </div>
+            `;
+        }
+
+        function getPerformanceMessage() {
+            if (score >= 80) return "Excellent! You demonstrate strong clinical decision-making skills for STD management in India.";
+            if (score >= 60) return "Good performance! Review NACO guidelines to improve your approach.";
+            return "Keep practicing! STD management requires familiarity with national protocols.";
+        }
+
+        function restartSimulation() {
+            currentScenario = 0;
+            score = 0;
+            location.reload();
+        }
+
+        initSimulation();
+    </script>
+</body>
+</html>

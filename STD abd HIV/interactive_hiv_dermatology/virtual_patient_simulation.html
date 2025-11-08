@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIV Dermatology Virtual Patient Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .simulation-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #4ecdc4;
+            padding-bottom: 20px;
+        }
+        .patient-profile {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .patient-info {
+            flex: 1;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #4ecdc4;
+        }
+        .patient-image {
+            flex: 1;
+            text-align: center;
+        }
+        .patient-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            color: #6c757d;
+            border: 3px solid #4ecdc4;
+        }
+        .symptoms-section {
+            margin-bottom: 30px;
+        }
+        .symptoms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .symptom-card {
+            background-color: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .symptom-card:hover {
+            background-color: #ffeaa7;
+            transform: translateY(-2px);
+        }
+        .symptom-card.selected {
+            background-color: #4ecdc4;
+            color: white;
+            border-color: #26a69a;
+        }
+        .investigations-section {
+            margin-bottom: 30px;
+        }
+        .investigations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .investigation-btn {
+            background-color: #e9ecef;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .investigation-btn:hover {
+            background-color: #dee2e6;
+        }
+        .investigation-btn.selected {
+            background-color: #4ecdc4;
+            color: white;
+            border-color: #26a69a;
+        }
+        .diagnosis-section {
+            margin-bottom: 30px;
+        }
+        .diagnosis-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .diagnosis-card {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .diagnosis-card:hover {
+            background-color: #e9ecef;
+        }
+        .diagnosis-card.selected {
+            background-color: #4ecdc4;
+            color: white;
+            border-color: #26a69a;
+        }
+        .treatment-section {
+            margin-bottom: 30px;
+        }
+        .treatment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .treatment-btn {
+            background-color: #e9ecef;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .treatment-btn:hover {
+            background-color: #dee2e6;
+        }
+        .treatment-btn.selected {
+            background-color: #4ecdc4;
+            color: white;
+            border-color: #26a69a;
+        }
+        .feedback-section {
+            background-color: #e8f4fd;
+            border: 2px solid #4ecdc4;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        .score-display {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            display: none;
+        }
+        .next-patient-btn {
+            background-color: #74b9ff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: none;
+            margin: 20px auto;
+        }
+        .submit-btn {
+            background-color: #4ecdc4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px auto;
+            display: block;
+        }
+        .submit-btn:hover {
+            background-color: #26a69a;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #4ecdc4;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        h2 {
+            color: #2d3436;
+            border-bottom: 2px solid #4ecdc4;
+            padding-bottom: 10px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2d3436;
+        }
+    </style>
+</head>
+<body>
+    <div class="simulation-container">
+        <div class="header">
+            <h1>🩺 HIV Dermatology Virtual Patient Simulation</h1>
+            <p>Diagnose and treat virtual patients with HIV-related dermatological conditions</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+
+        <div class="patient-profile" id="patient-profile">
+            <div class="patient-info">
+                <div class="section-title">Patient Information</div>
+                <p><strong>Name:</strong> <span id="patient-name"></span></p>
+                <p><strong>Age:</strong> <span id="patient-age"></span></p>
+                <p><strong>Gender:</strong> <span id="patient-gender"></span></p>
+                <p><strong>CD4 Count:</strong> <span id="cd4-count"></span></p>
+                <p><strong>Viral Load:</strong> <span id="viral-load"></span></p>
+                <p><strong>ART Status:</strong> <span id="art-status"></span></p>
+                <p><strong>Presenting Complaint:</strong> <span id="complaint"></span></p>
+            </div>
+            <div class="patient-image">
+                <div class="patient-photo" id="patient-photo">👤</div>
+            </div>
+        </div>
+
+        <div class="symptoms-section">
+            <h2>Step 1: Select Observed Symptoms</h2>
+            <div class="symptoms-grid" id="symptoms-grid"></div>
+        </div>
+
+        <div class="investigations-section">
+            <h2>Step 2: Order Investigations</h2>
+            <div class="investigations-grid" id="investigations-grid"></div>
+        </div>
+
+        <div class="diagnosis-section">
+            <h2>Step 3: Make Diagnosis</h2>
+            <div class="diagnosis-options" id="diagnosis-options"></div>
+        </div>
+
+        <div class="treatment-section">
+            <h2>Step 4: Select Treatment</h2>
+            <div class="treatment-options" id="treatment-options"></div>
+        </div>
+
+        <button class="submit-btn" id="submit-btn">Submit Management Plan</button>
+
+        <div class="feedback-section" id="feedback-section">
+            <h3>Case Feedback</h3>
+            <div id="feedback-content"></div>
+        </div>
+
+        <div class="score-display" id="score-display">
+            Case Score: <span id="case-score"></span>/100
+        </div>
+
+        <button class="next-patient-btn" id="next-patient-btn">Next Patient</button>
+    </div>
+
+    <script>
+        const patients = [
+            {
+                name: "Rajesh Kumar",
+                age: 42,
+                gender: "Male",
+                cd4: "180 cells/μL",
+                viralLoad: "45,000 copies/mL",
+                art: "On ART for 2 years",
+                complaint: "Itchy red patches in skin folds for 3 months",
+                symptoms: ["Red scaly patches in axillae", "Similar lesions in groin", "Mild itching", "No fever"],
+                investigations: ["KOH mount", "Skin biopsy", "Fungal culture"],
+                correctDiagnosis: "Seborrheic Dermatitis",
+                diagnoses: ["Seborrheic Dermatitis", "Psoriasis", "Tinea corporis", "Contact dermatitis"],
+                correctTreatment: "Topical ketoconazole + steroid",
+                treatments: ["Topical ketoconazole + steroid", "Systemic antifungals", "UV therapy", "Systemic steroids"],
+                feedback: "Correct! Seborrheic dermatitis is the most common HIV dermatological manifestation in India. First-line treatment is topical ketoconazole 2% with mild steroid. In tropical climates, this condition is exacerbated by heat and humidity."
+            },
+            {
+                name: "Priya Sharma",
+                age: 35,
+                gender: "Female",
+                cd4: "120 cells/μL",
+                viralLoad: "120,000 copies/mL",
+                art: "ART initiated 6 months ago",
+                complaint: "Multiple itchy red bumps on arms and legs for 2 months",
+                symptoms: ["Multiple pruritic papules", "Extensor surfaces of arms", "Anterior shins", "No vesicles"],
+                investigations: ["Skin scraping for scabies", "Complete blood count", "CD4 count"],
+                correctDiagnosis: "Pruritic Papular Eruption",
+                diagnoses: ["Pruritic Papular Eruption", "Scabies", "Insect bite reactions", "Drug eruption"],
+                correctTreatment: "Topical steroids + antihistamines",
+                treatments: ["Topical steroids + antihistamines", "Permethrin cream", "Systemic steroids", "Antiviral therapy"],
+                feedback: "Excellent diagnosis! PPE is common in advanced HIV and often misdiagnosed as scabies in India. Associated with low CD4 counts and eosinophilia. Treatment includes topical steroids and antihistamines."
+            },
+            {
+                name: "Amit Singh",
+                age: 38,
+                gender: "Male",
+                cd4: "250 cells/μL",
+                viralLoad: "85,000 copies/mL",
+                art: "On ART for 1 year",
+                complaint: "Painful sores in mouth for 1 week",
+                symptoms: ["White patches on tongue", "Red inflamed mucosa", "Difficulty swallowing", "No fever"],
+                investigations: ["Oral swab for fungal culture", "CD4 count", "Viral load"],
+                correctDiagnosis: "Oral Candidiasis",
+                diagnoses: ["Oral Candidiasis", "Oral herpes", "Aphthous ulcers", "Oral cancer"],
+                correctTreatment: "Topical nystatin",
+                treatments: ["Topical nystatin", "Systemic antifungals", "Acyclovir", "Steroid mouthwash"],
+                feedback: "Correct! Oral candidiasis is often the first sign of HIV immunosuppression in India. Topical nystatin or clotrimazole is first-line. Systemic antifungals are reserved for severe cases or treatment failure."
+            },
+            {
+                name: "Sunita Patel",
+                age: 45,
+                gender: "Female",
+                cd4: "90 cells/μL",
+                viralLoad: "200,000 copies/mL",
+                art: "ART naive",
+                complaint: "Purple patches on palate for 4 weeks",
+                symptoms: ["Violaceous patches on palate", "Non-tender lesions", "No bleeding", "Asymptomatic"],
+                investigations: ["Biopsy of lesion", "HHV-8 PCR", "CD4 count"],
+                correctDiagnosis: "Kaposi's Sarcoma",
+                diagnoses: ["Kaposi's Sarcoma", "Oral melanoma", "Hemangioma", "Pyogenic granuloma"],
+                correctTreatment: "ART + chemotherapy",
+                treatments: ["ART + chemotherapy", "ART alone", "Radiotherapy", "Surgical excision"],
+                feedback: "Perfect! Kaposi's sarcoma is caused by HHV-8 and seen in 10-20% of Indian HIV patients. In advanced immunosuppression, combination of ART and chemotherapy (liposomal doxorubicin) is recommended through NACO."
+            }
+        ];
+
+        let currentPatientIndex = 0;
+        let selectedSymptoms = [];
+        let selectedInvestigations = [];
+        let selectedDiagnosis = null;
+        let selectedTreatment = null;
+        let score = 0;
+
+        function loadPatient() {
+            const patient = patients[currentPatientIndex];
+            document.getElementById('patient-name').textContent = patient.name;
+            document.getElementById('patient-age').textContent = patient.age;
+            document.getElementById('patient-gender').textContent = patient.gender;
+            document.getElementById('cd4-count').textContent = patient.cd4;
+            document.getElementById('viral-load').textContent = patient.viralLoad;
+            document.getElementById('art-status').textContent = patient.art;
+            document.getElementById('complaint').textContent = patient.complaint;
+
+            loadSymptoms();
+            loadInvestigations();
+            loadDiagnoses();
+            loadTreatments();
+
+            resetSelections();
+            updateProgress();
+        }
+
+        function loadSymptoms() {
+            const symptomsGrid = document.getElementById('symptoms-grid');
+            symptomsGrid.innerHTML = '';
+
+            patients[currentPatientIndex].symptoms.forEach((symptom, index) => {
+                const symptomCard = document.createElement('div');
+                symptomCard.className = 'symptom-card';
+                symptomCard.textContent = symptom;
+                symptomCard.addEventListener('click', () => toggleSymptom(index, symptomCard));
+                symptomsGrid.appendChild(symptomCard);
+            });
+        }
+
+        function loadInvestigations() {
+            const investigationsGrid = document.getElementById('investigations-grid');
+            investigationsGrid.innerHTML = '';
+
+            patients[currentPatientIndex].investigations.forEach((investigation, index) => {
+                const investigationBtn = document.createElement('div');
+                investigationBtn.className = 'investigation-btn';
+                investigationBtn.textContent = investigation;
+                investigationBtn.addEventListener('click', () => toggleInvestigation(index, investigationBtn));
+                investigationsGrid.appendChild(investigationBtn);
+            });
+        }
+
+        function loadDiagnoses() {
+            const diagnosisOptions = document.getElementById('diagnosis-options');
+            diagnosisOptions.innerHTML = '';
+
+            patients[currentPatientIndex].diagnoses.forEach((diagnosis, index) => {
+                const diagnosisCard = document.createElement('div');
+                diagnosisCard.className = 'diagnosis-card';
+                diagnosisCard.textContent = diagnosis;
+                diagnosisCard.addEventListener('click', () => selectDiagnosis(index, diagnosisCard));
+                diagnosisOptions.appendChild(diagnosisCard);
+            });
+        }
+
+        function loadTreatments() {
+            const treatmentOptions = document.getElementById('treatment-options');
+            treatmentOptions.innerHTML = '';
+
+            patients[currentPatientIndex].treatments.forEach((treatment, index) => {
+                const treatmentBtn = document.createElement('div');
+                treatmentBtn.className = 'treatment-btn';
+                treatmentBtn.textContent = treatment;
+                treatmentBtn.addEventListener('click', () => selectTreatment(index, treatmentBtn));
+                treatmentOptions.appendChild(treatmentBtn);
+            });
+        }
+
+        function toggleSymptom(index, element) {
+            element.classList.toggle('selected');
+            if (element.classList.contains('selected')) {
+                selectedSymptoms.push(index);
+            } else {
+                selectedSymptoms = selectedSymptoms.filter(i => i !== index);
+            }
+        }
+
+        function toggleInvestigation(index, element) {
+            element.classList.toggle('selected');
+            if (element.classList.contains('selected')) {
+                selectedInvestigations.push(index);
+            } else {
+                selectedInvestigations = selectedInvestigations.filter(i => i !== index);
+            }
+        }
+
+        function selectDiagnosis(index, element) {
+            document.querySelectorAll('.diagnosis-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedDiagnosis = index;
+        }
+
+        function selectTreatment(index, element) {
+            document.querySelectorAll('.treatment-btn').forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedTreatment = index;
+        }
+
+        function submitManagement() {
+            const patient = patients[currentPatientIndex];
+            let caseScore = 0;
+            let feedback = [];
+
+            // Check symptoms (all must be selected for full points)
+            if (selectedSymptoms.length === patient.symptoms.length) {
+                caseScore += 25;
+                feedback.push("✓ Correct symptom identification");
+            } else {
+                feedback.push("✗ Incomplete symptom assessment");
+            }
+
+            // Check investigations (at least 2 for partial credit)
+            if (selectedInvestigations.length >= 2) {
+                caseScore += 25;
+                feedback.push("✓ Appropriate investigations ordered");
+            } else {
+                feedback.push("✗ Insufficient investigations");
+            }
+
+            // Check diagnosis
+            if (selectedDiagnosis !== null && patient.diagnoses[selectedDiagnosis] === patient.correctDiagnosis) {
+                caseScore += 25;
+                feedback.push("✓ Correct diagnosis");
+            } else {
+                feedback.push("✗ Incorrect diagnosis");
+            }
+
+            // Check treatment
+            if (selectedTreatment !== null && patient.treatments[selectedTreatment] === patient.correctTreatment) {
+                caseScore += 25;
+                feedback.push("✓ Appropriate treatment selected");
+            } else {
+                feedback.push("✗ Incorrect treatment choice");
+            }
+
+            score += caseScore;
+
+            const feedbackContent = document.getElementById('feedback-content');
+            feedbackContent.innerHTML = `
+                <p><strong>Score for this case: ${caseScore}/100</strong></p>
+                <ul>${feedback.map(item => `<li>${item}</li>`).join('')}</ul>
+                <p><strong>Case Explanation:</strong></p>
+                <p>${patient.feedback}</p>
+            `;
+
+            document.getElementById('feedback-section').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('score-display').style.display = 'block';
+            document.getElementById('case-score').textContent = caseScore;
+
+            if (currentPatientIndex < patients.length - 1) {
+                document.getElementById('next-patient-btn').style.display = 'block';
+            }
+        }
+
+        function nextPatient() {
+            currentPatientIndex++;
+            document.getElementById('feedback-section').style.display = 'none';
+            document.getElementById('score-display').style.display = 'none';
+            document.getElementById('next-patient-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+            loadPatient();
+        }
+
+        function resetSelections() {
+            selectedSymptoms = [];
+            selectedInvestigations = [];
+            selectedDiagnosis = null;
+            selectedTreatment = null;
+            document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+        }
+
+        function updateProgress() {
+            const progress = ((currentPatientIndex + 1) / patients.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+        }
+
+        document.getElementById('submit-btn').addEventListener('click', submitManagement);
+        document.getElementById('next-patient-btn').addEventListener('click', nextPatient);
+
+        loadPatient();
+    </script>
+</body>
+</html>
